@@ -8,8 +8,8 @@ public class EngineImpl implements Engine {
 	
 	
 	public EngineImpl() {
-        this.selection = new SelectionImpl(buffer);
         this.buffer = new StringBuffer();
+        this.selection = new SelectionImpl(buffer);
         this.clipboard = "";
 	}
 

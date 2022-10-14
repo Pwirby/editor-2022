@@ -8,7 +8,7 @@ public class SelectionImpl implements Selection {
 
     public SelectionImpl(StringBuffer buffer) {
         this.beginIndex = this.endIndex = this.bufferBeginIndex = 0;
-        this.bufferEndIndex = buffer.length()-1;
+        this.bufferEndIndex = buffer.length();
     }
     /**
      * Provides the index of the first character designated
