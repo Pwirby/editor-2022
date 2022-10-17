@@ -10,6 +10,20 @@ public class SelectionImpl implements Selection {
         this.beginIndex = this.endIndex = this.bufferBeginIndex = 0;
         this.bufferEndIndex = buffer.length();
     }
+
+    public SelectionImpl(StringBuffer buffer, int beginIndex, int endIndex) {
+        this.beginIndex = beginIndex;
+        this.endIndex = endIndex;
+        this.bufferBeginIndex = 0;
+        this.bufferEndIndex = buffer.length();
+    }
+
+    public SelectionImpl(StringBuffer buffer, int beginIndex) {
+        this.beginIndex = this.endIndex = beginIndex;
+        this.bufferBeginIndex = 0;
+        this.bufferEndIndex = buffer.length();
+    }
+
     /**
      * Provides the index of the first character designated
      * by the selection.
@@ -61,10 +75,10 @@ public class SelectionImpl implements Selection {
      */
     @Override
     public void setBeginIndex(int beginIndex) {
-        if(beginIndex < getBufferBeginIndex()){
+        if (beginIndex < this.getBufferBeginIndex()) {
             throw new IndexOutOfBoundsException();
         } else {
-        this.beginIndex = beginIndex;
+            this.beginIndex = beginIndex;
         }
     }
 
@@ -75,7 +89,7 @@ public class SelectionImpl implements Selection {
      */
     @Override
     public void setEndIndex(int endIndex) {
-        if(endIndex > getBufferEndIndex()){
+        if (endIndex > this.getBufferEndIndex()) {
             throw new IndexOutOfBoundsException();
         } else {
             this.endIndex = endIndex;
