@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class EngineTest {
-
+    String string1 = "the quick brown fox jumps over the lazy dog";
     private Engine engine;
 
     @org.junit.jupiter.api.BeforeEach
@@ -17,36 +17,60 @@ class EngineTest {
     private void todo() {
         fail("Unimplemented test");
     }
+
     @Test
     @DisplayName("Buffer must be empty after initialisation")
     void getSelection() {
         Selection selection = engine.getSelection();
-        assertEquals(selection.getBufferBeginIndex(),selection.getBeginIndex());
-        assertEquals("",engine.getBufferContents());
+        assertEquals(selection.getBufferBeginIndex(), selection.getBeginIndex());
+        assertEquals("", engine.getBufferContents());
     }
 
     @Test
     void getBufferContents() {
-        todo();
+        engine.insert(string1);
+        assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
     void getClipboardContents() {
-        todo();
+        engine.insert(string1);
+        Selection selection = engine.getSelection();
+        selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
+        engine.copySelectedText();
+        assertEquals(string1, engine.getClipboardContents());
+        assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
     void cutSelectedText() {
-        todo();
+        engine.insert(string1);
+        Selection selection = engine.getSelection();
+        selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
+        engine.cutSelectedText();
+        assertEquals(string1, engine.getClipboardContents());
+        assertEquals("", engine.getBufferContents());
     }
 
     @Test
     void copySelectedText() {
-        todo();
+        engine.insert(string1);
+        Selection selection = engine.getSelection();
+        selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
+        engine.copySelectedText();
+        assertEquals(string1, engine.getClipboardContents());
+        assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
     void pasteClipboard() {
-        todo();
+        engine.insert(string1);
+        Selection selection = engine.getSelection();
+        selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
+        engine.copySelectedText();
+        selection.setEndIndex(0);
+        engine.pasteClipboard();
+        assertEquals(string1, engine.getClipboardContents());
+        assertEquals(string1+string1, engine.getBufferContents());
     }
 }
