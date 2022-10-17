@@ -79,9 +79,9 @@ class EngineTest {
         //|>the quick brown fox jumps over the lazy dog<|
         selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.copySelectedText();
-        //the quick brown fox jumps over the lazy dog|><|
+        //|><|the quick brown fox jumps over the lazy dog
         selection.setEndIndex(0);
-        //the quick brown fox jumps over the lazy dog|>the quick brown fox jumps over the lazy dog<|
+        //|>the quick brown fox jumps over the lazy dog<|the quick brown fox jumps over the lazy dog
         engine.pasteClipboard();
         assertEquals(string1, engine.getClipboardContents());
         assertEquals(string1+string1, engine.getBufferContents());
