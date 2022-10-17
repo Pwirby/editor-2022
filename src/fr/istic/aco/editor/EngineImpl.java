@@ -1,27 +1,18 @@
 package fr.istic.aco.editor;
 
 public class EngineImpl implements Engine {
-	
-	private Selection selection;
-	private StringBuffer buffer;
-	private String clipboard;
-	
-	
-	public EngineImpl() {
+
+    private Selection selection;
+    private StringBuffer buffer;
+    private String clipboard;
+
+
+    public EngineImpl() {
         this.buffer = new StringBuffer();
         this.selection = new SelectionImpl(buffer);
         this.clipboard = "";
-	}
-
-
-    /**
-     * Changes the buffer content
-     */
-    public void setBuffer(String s) {
-        delete();
-        this.buffer.append(s);
     }
-	
+
     /**
      * Provides access to the selection control object
      *
@@ -59,7 +50,7 @@ public class EngineImpl implements Engine {
      */
     @Override
     public void cutSelectedText() {
-        this.clipboard = this.buffer.substring(this.selection.getBeginIndex(),this.selection.getEndIndex());
+        this.clipboard = this.buffer.substring(this.selection.getBeginIndex(), this.selection.getEndIndex());
         delete();
     }
 
@@ -71,8 +62,8 @@ public class EngineImpl implements Engine {
     @Override
     public void copySelectedText() {
         int begin = this.selection.getBeginIndex(), end = this.selection.getEndIndex();
-        if(end > begin){
-            this.clipboard = this.buffer.substring(begin,end);
+        if (end > begin) {
+            this.clipboard = this.buffer.substring(begin, end);
         }
     }
 
@@ -92,8 +83,8 @@ public class EngineImpl implements Engine {
      */
     @Override
     public void insert(String s) {
-        delete();
-        this.buffer.replace(this.selection.getBeginIndex(),this.selection.getEndIndex(), s);
+        this.buffer.replace(this.selection.getBeginIndex(), this.selection.getEndIndex(), s);
+        this.selection = new SelectionImpl(this.buffer, this.selection.getBeginIndex() + s.length());
     }
 
     /**
@@ -101,6 +92,7 @@ public class EngineImpl implements Engine {
      */
     @Override
     public void delete() {
-        this.buffer.delete(this.selection.getBeginIndex(),this.selection.getEndIndex());
+        this.buffer.delete(this.selection.getBeginIndex(), this.selection.getEndIndex());
+        this.selection = new SelectionImpl(this.buffer, this.selection.getBeginIndex());
     }
 }
