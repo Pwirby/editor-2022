@@ -12,16 +12,19 @@ public class SelectionImpl implements Selection {
     }
 
     public SelectionImpl(StringBuffer buffer, int beginIndex, int endIndex) {
-        this.beginIndex = beginIndex;
-        this.endIndex = endIndex;
         this.bufferBeginIndex = 0;
         this.bufferEndIndex = buffer.length();
+        if (beginIndex > endIndex) {
+            int temp = beginIndex;
+            beginIndex = endIndex;
+            endIndex = temp;
+        }
+        setBeginIndex(beginIndex);
+        setEndIndex(endIndex);
     }
 
     public SelectionImpl(StringBuffer buffer, int beginIndex) {
-        this.beginIndex = this.endIndex = beginIndex;
-        this.bufferBeginIndex = 0;
-        this.bufferEndIndex = buffer.length();
+        this(buffer, beginIndex, beginIndex);
     }
 
     /**
@@ -75,10 +78,15 @@ public class SelectionImpl implements Selection {
      */
     @Override
     public void setBeginIndex(int beginIndex) {
-        if (beginIndex < this.getBufferBeginIndex()) {
+        if (beginIndex < this.getBufferBeginIndex() || beginIndex > this.getBufferEndIndex()) {
             throw new IndexOutOfBoundsException();
         } else {
-            this.beginIndex = beginIndex;
+            if (beginIndex > this.endIndex) {
+                this.beginIndex = this.endIndex;
+                this.endIndex = beginIndex;
+            } else {
+                this.beginIndex = beginIndex;
+            }
         }
     }
 
@@ -89,10 +97,15 @@ public class SelectionImpl implements Selection {
      */
     @Override
     public void setEndIndex(int endIndex) {
-        if (endIndex > this.getBufferEndIndex()) {
+        if (endIndex < this.getBufferBeginIndex() || endIndex > this.getBufferEndIndex()) {
             throw new IndexOutOfBoundsException();
         } else {
-            this.endIndex = endIndex;
+            if (endIndex < this.beginIndex) {
+                this.endIndex = this.beginIndex;
+                this.beginIndex = endIndex;
+            } else {
+                this.endIndex = endIndex;
+            }
         }
     }
 }
