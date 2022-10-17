@@ -21,6 +21,7 @@ class EngineTest {
     @Test
     @DisplayName("Buffer must be empty after initialisation")
     void getSelection() {
+        //|><|
         Selection selection = engine.getSelection();
         assertEquals(selection.getBufferBeginIndex(), selection.getBeginIndex());
         assertEquals("", engine.getBufferContents());
@@ -28,14 +29,17 @@ class EngineTest {
 
     @Test
     void getBufferContents() {
+        //the quick brown fox jumps over the lazy dog|><|
         engine.insert(string1);
         assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
     void getClipboardContents() {
+        //the quick brown fox jumps over the lazy dog|><|
         engine.insert(string1);
         Selection selection = engine.getSelection();
+        //|>the quick brown fox jumps over the lazy dog<|
         selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.copySelectedText();
         assertEquals(string1, engine.getClipboardContents());
@@ -44,9 +48,12 @@ class EngineTest {
 
     @Test
     void cutSelectedText() {
+        //the quick brown fox jumps over the lazy dog|><|
         engine.insert(string1);
         Selection selection = engine.getSelection();
+        //|>the quick brown fox jumps over the lazy dog<|
         selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
+        //|><|
         engine.cutSelectedText();
         assertEquals(string1, engine.getClipboardContents());
         assertEquals("", engine.getBufferContents());
@@ -54,8 +61,10 @@ class EngineTest {
 
     @Test
     void copySelectedText() {
+        //the quick brown fox jumps over the lazy dog|><|
         engine.insert(string1);
         Selection selection = engine.getSelection();
+        //|>the quick brown fox jumps over the lazy dog<|
         selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.copySelectedText();
         assertEquals(string1, engine.getClipboardContents());
@@ -64,11 +73,15 @@ class EngineTest {
 
     @Test
     void pasteClipboard() {
+        //the quick brown fox jumps over the lazy dog|><|
         engine.insert(string1);
         Selection selection = engine.getSelection();
+        //|>the quick brown fox jumps over the lazy dog<|
         selection.setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.copySelectedText();
+        //the quick brown fox jumps over the lazy dog|><|
         selection.setEndIndex(0);
+        //the quick brown fox jumps over the lazy dog|>the quick brown fox jumps over the lazy dog<|
         engine.pasteClipboard();
         assertEquals(string1, engine.getClipboardContents());
         assertEquals(string1+string1, engine.getBufferContents());
