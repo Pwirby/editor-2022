@@ -95,4 +95,20 @@ public class EngineImpl implements Engine {
         this.buffer.delete(this.selection.getBeginIndex(), this.selection.getEndIndex());
         this.selection = new SelectionImpl(this.buffer, this.selection.getBeginIndex());
     }
+
+    /**
+     * Display the Engine current state
+     *
+     * @return the buffer and bounds of the selection as a String
+     */
+    @Override
+    public String toString(){
+        String result = "";
+        for(int i=0; i<=this.getBufferContents().length();i++){
+            if(i==this.selection.getBeginIndex()) result+= "|>";
+            if(i==this.selection.getEndIndex()) result+= "<|";
+            if(i<this.getBufferContents().length()) result+=this.buffer.charAt(i);
+        }
+        return result;
+    }
 }
