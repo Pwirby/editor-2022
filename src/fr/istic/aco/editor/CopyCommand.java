@@ -1,7 +1,7 @@
 package fr.istic.aco.editor;
 
 public class CopyCommand implements Command {
-    private Engine engine;
+    private final Engine engine;
 
     public CopyCommand(Engine engine) {
         this.engine = engine;
