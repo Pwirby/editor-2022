@@ -12,4 +12,8 @@ public interface UserInterface {
 
     void addCommand(String keyword, Command command);
 
+    void DisplayBuffer();
+
+    void DisplayClipboard();
+
 }

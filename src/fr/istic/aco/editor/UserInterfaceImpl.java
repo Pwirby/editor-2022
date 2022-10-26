@@ -14,10 +14,18 @@ public class UserInterfaceImpl implements UserInterface{
     private InputStream inputStream;
     private BufferedReader bufferedReader;
 
+    private Engine engine;
+
+    public UserInterfaceImpl(Engine engine) {
+        this.engine = engine;
+    }
+
     @Override
     public void runInvokerLoop() {
         while (!stopLoop) {
             // TODO afficher les informations du buffer et du clipboard
+            DisplayBuffer();
+            DisplayClipboard();
             String userInput = null;
             try {
                 userInput = readUserInput();
@@ -28,10 +36,17 @@ public class UserInterfaceImpl implements UserInterface{
                 break;
             }
             // TODO vérifier que l'input entré correspond bien à une commande
-            Command cmdToExecute = commands.get(userInput);
-            if (cmdToExecute != null) {
-                cmdToExecute.execute();
+            if(commands.containsKey(userInput)){
+                Command cmdToExecute = commands.get(userInput);
+                if (cmdToExecute != null) {
+                    cmdToExecute.execute();
+                }
             }
+            else{
+                engine.insert(userInput);
+            }
+
+
         }
     }
 
@@ -63,5 +78,22 @@ public class UserInterfaceImpl implements UserInterface{
         commands.put(keyword,cmd);
     }
 
+
     //TODO ajouter les fontions en lien avec l'engine pour l'affichage
+
+    @Override
+    public void DisplayBuffer() {
+        System.out.println("========== Buffer ===========================================================");
+        System.out.println(engine.toString());
+        //System.out.printf("=============================================================================");
+    }
+
+    @Override
+    public void DisplayClipboard() {
+        System.out.println("========== Clipboard ========================================================");
+        System.out.println(engine.getClipboardContents());
+        //System.out.printf("=============================================================================");
+    }
+
+
 }
