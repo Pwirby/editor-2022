@@ -14,7 +14,7 @@ public class Mini_editor_V1{
     private void run(){
 
         engine = new EngineImpl();
-        userInterface = new UserInterfaceImpl();
+        userInterface = new UserInterfaceImpl(engine);
 
         userInterface.setReadStream(System.in);
 
