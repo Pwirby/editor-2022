@@ -19,8 +19,11 @@ public class SelectionImpl implements Selection {
             beginIndex = endIndex;
             endIndex = temp;
         }
-        setBeginIndex(beginIndex);
-        setEndIndex(endIndex);
+        //setBeginIndex(beginIndex);
+        //setEndIndex(endIndex);
+        this.beginIndex = beginIndex;
+        this.endIndex = endIndex;
+        System.out.println("Selection : Begin " + getBeginIndex() + " End " + getEndIndex());
     }
 
     public SelectionImpl(StringBuffer buffer, int beginIndex) {
