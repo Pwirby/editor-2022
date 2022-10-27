@@ -1,5 +1,7 @@
 package fr.istic.aco.editor;
 
+import fr.istic.aco.editor.commands.*;
+
 public class Mini_editor_V1{
 
     private Engine engine;
@@ -27,6 +29,7 @@ public class Mini_editor_V1{
         userInterface.addCommand("Copy", new CopyCommand(engine));
         userInterface.addCommand("Cut", new CutCommand(engine));
         userInterface.addCommand("Paste", new PasteCommand(engine));
+        userInterface.addCommand("SelectAll", new SelectAllCommand(engine));
     }
 
 }
