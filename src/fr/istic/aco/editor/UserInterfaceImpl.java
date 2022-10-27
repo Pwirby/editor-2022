@@ -1,5 +1,7 @@
 package fr.istic.aco.editor;
 
+import fr.istic.aco.editor.commands.Command;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -78,22 +80,34 @@ public class UserInterfaceImpl implements UserInterface{
         commands.put(keyword,cmd);
     }
 
-
-    //TODO ajouter les fontions en lien avec l'engine pour l'affichage
-
     @Override
     public void DisplayBuffer() {
         System.out.println("========== Buffer ===========================================================");
-        System.out.println(engine.toString());
-        //System.out.printf("=============================================================================");
+        DisplayText(engine.toString(), 70);
     }
 
     @Override
     public void DisplayClipboard() {
         System.out.println("========== Clipboard ========================================================");
-        System.out.println(engine.getClipboardContents());
-        //System.out.printf("=============================================================================");
+        DisplayText(engine.getClipboardContents(), 70);
     }
 
+    @Override
+    public void DisplayText(String text, int maxLengthOfLine){
+        for (int i=0; i<text.length(); i+=maxLengthOfLine){
+            System.out.print("|   ");
+            int lengthOfLine;
+            if(text.length() - i < maxLengthOfLine){
+                lengthOfLine = text.length() - i;
+            }
+            else {
+                lengthOfLine = maxLengthOfLine;
+            }
+            for (int j=0; j<lengthOfLine; j++){
+                System.out.print(text.charAt(i+j));
+            }
+            System.out.println();
+        }
+    }
 
 }

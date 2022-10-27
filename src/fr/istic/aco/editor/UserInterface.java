@@ -1,5 +1,7 @@
 package fr.istic.aco.editor;
 
+import fr.istic.aco.editor.commands.Command;
+
 import java.io.InputStream;
 
 public interface UserInterface {
@@ -16,4 +18,5 @@ public interface UserInterface {
 
     void DisplayClipboard();
 
+    void DisplayText(String text, int maxLengthOfLine);
 }
