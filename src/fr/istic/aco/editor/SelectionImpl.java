@@ -23,7 +23,6 @@ public class SelectionImpl implements Selection {
         //setEndIndex(endIndex);
         this.beginIndex = beginIndex;
         this.endIndex = endIndex;
-        System.out.println("Selection : Begin " + getBeginIndex() + " End " + getEndIndex());
     }
 
     public SelectionImpl(StringBuffer buffer, int beginIndex) {
