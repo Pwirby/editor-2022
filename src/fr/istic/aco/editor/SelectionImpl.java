@@ -3,28 +3,24 @@ package fr.istic.aco.editor;
 public class SelectionImpl implements Selection {
     private int beginIndex;
     private int endIndex;
+    private StringBuffer buffer;
     private int bufferBeginIndex;
-    private int bufferEndIndex;
 
     public SelectionImpl(StringBuffer buffer) {
         this.beginIndex = this.endIndex = this.bufferBeginIndex = 0;
-        this.bufferEndIndex = buffer.length();
+        this.buffer = buffer;
     }
 
     public SelectionImpl(StringBuffer buffer, int beginIndex, int endIndex) {
+        this.buffer = buffer;
         this.bufferBeginIndex = 0;
-        this.bufferEndIndex = buffer.length();
         if (beginIndex > endIndex) {
             int temp = beginIndex;
             beginIndex = endIndex;
             endIndex = temp;
         }
-        setBeginIndex(beginIndex);
-        setEndIndex(endIndex);
-    }
-
-    public SelectionImpl(StringBuffer buffer, int beginIndex) {
-        this(buffer, beginIndex, beginIndex);
+        this.endIndex = endIndex;
+        this.beginIndex = beginIndex;
     }
 
     /**
@@ -68,7 +64,7 @@ public class SelectionImpl implements Selection {
      */
     @Override
     public int getBufferEndIndex() {
-        return this.bufferEndIndex;
+        return this.buffer.length();
     }
 
     /**

@@ -62,9 +62,7 @@ public class EngineImpl implements Engine {
     @Override
     public void copySelectedText() {
         int begin = this.selection.getBeginIndex(), end = this.selection.getEndIndex();
-        if (end > begin) {
-            this.clipboard = this.buffer.substring(begin, end);
-        }
+        this.clipboard = this.buffer.substring(begin, end);
     }
 
     /**
@@ -84,7 +82,8 @@ public class EngineImpl implements Engine {
     @Override
     public void insert(String s) {
         this.buffer.replace(this.selection.getBeginIndex(), this.selection.getEndIndex(), s);
-        this.selection = new SelectionImpl(this.buffer, this.selection.getBeginIndex() + s.length());
+        this.selection.setBeginIndex(this.selection.getBeginIndex() + s.length());
+        this.selection.setEndIndex(this.selection.getBeginIndex() + s.length());
     }
 
     /**
@@ -93,7 +92,8 @@ public class EngineImpl implements Engine {
     @Override
     public void delete() {
         this.buffer.delete(this.selection.getBeginIndex(), this.selection.getEndIndex());
-        this.selection = new SelectionImpl(this.buffer, this.selection.getBeginIndex());
+        this.selection.setBeginIndex(this.selection.getBeginIndex());
+        this.selection.setEndIndex(this.selection.getBeginIndex());
     }
 
     /**
@@ -102,12 +102,12 @@ public class EngineImpl implements Engine {
      * @return the buffer and bounds of the selection as a String
      */
     @Override
-    public String toString(){
+    public String toString() {
         String result = "";
-        for(int i=0; i<=this.getBufferContents().length();i++){
-            if(i==this.selection.getBeginIndex()) result+= "|>";
-            if(i==this.selection.getEndIndex()) result+= "<|";
-            if(i<this.getBufferContents().length()) result+=this.buffer.charAt(i);
+        for (int i = 0; i <= this.getBufferContents().length(); i++) {
+            if (i == this.selection.getBeginIndex()) result += "|>";
+            if (i == this.selection.getEndIndex()) result += "<|";
+            if (i < this.getBufferContents().length()) result += this.buffer.charAt(i);
         }
         return result;
     }

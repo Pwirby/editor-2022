@@ -38,7 +38,6 @@ class EngineTest {
         selection = engine.getSelection();
 
         assertEquals(string1, engine.getBufferContents());
-        assertEquals(string1.length(), selection.getBeginIndex());
         assertEquals(string1.length(), selection.getEndIndex());
     }
 
@@ -114,7 +113,6 @@ class EngineTest {
         selection = engine.getSelection();
         assertEquals(string1, engine.getClipboardContents());
         assertEquals(string1 + string1, engine.getBufferContents());
-        assertEquals(string1.length(), selection.getBeginIndex());
         assertEquals(string1.length(), selection.getEndIndex());
     }
 }
