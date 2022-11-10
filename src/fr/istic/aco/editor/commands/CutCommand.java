@@ -1,7 +1,8 @@
-package fr.istic.aco.editor;
+package fr.istic.aco.editor.commands;
+
+import fr.istic.aco.editor.Engine;
 
 public class CutCommand implements Command{
-
     private final Engine engine;
 
     public CutCommand(Engine engine) {
