@@ -14,10 +14,8 @@ public class SelectionImpl implements Selection {
     public SelectionImpl(StringBuffer buffer, int beginIndex, int endIndex) {
         this.buffer = buffer;
         this.bufferBeginIndex = 0;
-        if (beginIndex > endIndex) {
-            int temp = beginIndex;
-            beginIndex = endIndex;
-            endIndex = temp;
+        if (beginIndex > endIndex || beginIndex < this.getBeginIndex() || endIndex > this.getBufferEndIndex()) {
+            throw new IndexOutOfBoundsException();
         }
         this.endIndex = endIndex;
         this.beginIndex = beginIndex;
