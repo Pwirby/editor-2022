@@ -15,17 +15,18 @@ public class UserInterfaceImpl implements UserInterface{
     private boolean stopLoop = false;
     private InputStream inputStream;
     private BufferedReader bufferedReader;
-
     private Engine engine;
 
     public UserInterfaceImpl(Engine engine) {
         this.engine = engine;
     }
 
+    /**
+     * The main loop for the text editor that takes commands or texts
+     */
     @Override
     public void runInvokerLoop() {
         while (!stopLoop) {
-            // TODO afficher les informations du buffer et du clipboard
             DisplayBuffer();
             DisplayClipboard();
             String userInput = null;
@@ -37,7 +38,6 @@ public class UserInterfaceImpl implements UserInterface{
             if(userInput == null) {
                 break;
             }
-            // TODO vérifier que l'input entré correspond bien à une commande
             if(commands.containsKey(userInput)){
                 Command cmdToExecute = commands.get(userInput);
                 if (cmdToExecute != null) {
@@ -47,12 +47,13 @@ public class UserInterfaceImpl implements UserInterface{
             else{
                 engine.insert(userInput);
             }
-
-
         }
     }
 
     /*
+    /**
+     * Stop the main loop in runIvokerLoop and quit the application
+
     @Override
     public void stopLoop() {
         stopLoop = true;
@@ -63,6 +64,10 @@ public class UserInterfaceImpl implements UserInterface{
         return bufferedReader.readLine();
     }
 
+    /**
+     * Set the inputStream and connect to the bufferReader
+     * @param inputStream the InputStream to
+     */
     @Override
     public void setReadStream(InputStream inputStream) {
         if(inputStream == null) {
@@ -72,42 +77,57 @@ public class UserInterfaceImpl implements UserInterface{
         this.bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
     }
 
+    /**
+     * Add a Command in a hashmap
+     * @param keyword name of the command
+     * @param command Command to add
+     */
     @Override
-    public void addCommand(String keyword, Command cmd) {
-        if ((keyword == null) || (cmd == null)) {
+    public void addCommand(String keyword, Command command) {
+        if ((keyword == null) || (command == null)) {
             throw new IllegalArgumentException("null parameter");
         }
-        commands.put(keyword,cmd);
+        commands.put(keyword,command);
     }
 
+    /**
+     * Display the content of the buffer of the engine
+     */
     @Override
     public void DisplayBuffer() {
         System.out.println("========== Buffer ===========================================================");
         DisplayText(engine.toString(), 70);
     }
 
+    /**
+     * Display the content of the clipboard of the engine
+     */
     @Override
     public void DisplayClipboard() {
         System.out.println("========== Clipboard ========================================================");
         DisplayText(engine.getClipboardContents(), 70);
     }
 
+    /**
+     * Function to display a text in the terminal
+     * @param s the text to display
+     * @param maxLengthOfLine the number of characters to display per line
+     */
     @Override
-    public void DisplayText(String text, int maxLengthOfLine){
-        for (int i=0; i<text.length(); i+=maxLengthOfLine){
+    public void DisplayText(String s, int maxLengthOfLine){
+        for (int i=0; i<s.length(); i+=maxLengthOfLine){
             System.out.print("|   ");
             int lengthOfLine;
-            if(text.length() - i < maxLengthOfLine){
-                lengthOfLine = text.length() - i;
+            if(s.length() - i < maxLengthOfLine){
+                lengthOfLine = s.length() - i;
             }
             else {
                 lengthOfLine = maxLengthOfLine;
             }
             for (int j=0; j<lengthOfLine; j++){
-                System.out.print(text.charAt(i+j));
+                System.out.print(s.charAt(i+j));
             }
             System.out.println();
         }
     }
-
 }
