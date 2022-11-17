@@ -126,7 +126,7 @@ class EngineTest {
 
         //|><- the quick brown fox jumps over the lazy dog<|
         Selection selection = engine.getSelection();
-        assertThrows(IndexOutOfBoundsException.class, () -> selection.setBeginIndex(selection.getBufferBeginIndex() - 1));
+        assertThrows(IllegalArgumentException.class, () -> selection.setBeginIndex(selection.getBufferBeginIndex() - 1));
     }
 
     @Test
@@ -137,6 +137,6 @@ class EngineTest {
 
         //the quick brown fox jumps over the lazy dog|> -><|
         Selection selection = engine.getSelection();
-        assertThrows(IndexOutOfBoundsException.class, () -> selection.setEndIndex(selection.getBufferEndIndex() + 1));
+        assertThrows(IllegalArgumentException.class, () -> selection.setEndIndex(selection.getBufferEndIndex() + 1));
     }
 }
