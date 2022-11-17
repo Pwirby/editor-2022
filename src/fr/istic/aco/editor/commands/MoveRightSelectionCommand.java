@@ -11,7 +11,7 @@ public class MoveRightSelectionCommand implements Command{
 
     @Override
     public void execute() {
-        engine.getSelection().setBeginIndex(engine.getSelection().getBeginIndex()+1);
         engine.getSelection().setEndIndex(engine.getSelection().getEndIndex()+1);
+        engine.getSelection().setBeginIndex(engine.getSelection().getBeginIndex()+1);
     }
 }
