@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 
-public class UserInterfaceImpl implements UserInterface{
+public class UserInterfaceImpl implements UserInterface {
     private Map<String, Command> commands = new HashMap<>();
     private boolean stopLoop = false;
     private InputStream inputStream;
@@ -28,37 +28,35 @@ public class UserInterfaceImpl implements UserInterface{
     public void runInvokerLoop() {
         while (!stopLoop) {
             DisplayBuffer();
-            DisplayClipboard();
+            if (!engine.getClipboardContents().isEmpty()) DisplayClipboard();
             String userInput = null;
             try {
                 userInput = readUserInput();
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            if(userInput == null) {
+            if (userInput == null) {
                 break;
             }
-            if(commands.containsKey(userInput)){
+            //TODO: Use either if contains or if not null
+            if (commands.containsKey(userInput)) {
                 Command cmdToExecute = commands.get(userInput);
                 if (cmdToExecute != null) {
                     cmdToExecute.execute();
                 }
-            }
-            else{
+            } else {
                 engine.insert(userInput);
             }
         }
     }
 
-    /*
-    /**
-     * Stop the main loop in runIvokerLoop and quit the application
-
-    @Override
-    public void stopLoop() {
-        stopLoop = true;
-    }
-    */
+//    /**
+//     * Stop the main loop in runIvokerLoop and quit the application
+//    */
+//    @Override
+//    public void stopLoop() {
+//        stopLoop = true;
+//    }
 
     private String readUserInput() throws IOException {
         return bufferedReader.readLine();
@@ -66,11 +64,12 @@ public class UserInterfaceImpl implements UserInterface{
 
     /**
      * Set the inputStream and connect to the bufferReader
+     *
      * @param inputStream the InputStream to
      */
     @Override
     public void setReadStream(InputStream inputStream) {
-        if(inputStream == null) {
+        if (inputStream == null) {
             throw new IllegalArgumentException("null inputStream");
         }
         this.inputStream = inputStream;
@@ -79,6 +78,7 @@ public class UserInterfaceImpl implements UserInterface{
 
     /**
      * Add a Command in a hashmap
+     *
      * @param keyword name of the command
      * @param command Command to add
      */
@@ -87,7 +87,7 @@ public class UserInterfaceImpl implements UserInterface{
         if ((keyword == null) || (command == null)) {
             throw new IllegalArgumentException("null parameter");
         }
-        commands.put(keyword,command);
+        commands.put(keyword, command);
     }
 
     /**
@@ -110,24 +110,16 @@ public class UserInterfaceImpl implements UserInterface{
 
     /**
      * Function to display a text in the terminal
-     * @param s the text to display
+     *
+     * @param s               the text to display
      * @param maxLengthOfLine the number of characters to display per line
      */
     @Override
-    public void DisplayText(String s, int maxLengthOfLine){
-        for (int i=0; i<s.length(); i+=maxLengthOfLine){
-            System.out.print("|   ");
-            int lengthOfLine;
-            if(s.length() - i < maxLengthOfLine){
-                lengthOfLine = s.length() - i;
-            }
-            else {
-                lengthOfLine = maxLengthOfLine;
-            }
-            for (int j=0; j<lengthOfLine; j++){
-                System.out.print(s.charAt(i+j));
-            }
-            System.out.println();
+    public void DisplayText(String s, int maxLengthOfLine) {
+        int lastLine = s.length() - s.length() % maxLengthOfLine;
+        for (int i = 0; i < lastLine; i += maxLengthOfLine) {
+            System.out.println("|   " + s.substring(i, i + maxLengthOfLine));
         }
+        System.out.println("|   " + s.substring(lastLine, s.length()));
     }
 }
