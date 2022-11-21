@@ -25,8 +25,8 @@ class EngineTest {
     void getSelection() {
         //|><|
         selection = engine.getSelection();
-        assertEquals(selection.getBufferBeginIndex(), selection.getBeginIndex());
         assertEquals("", engine.getBufferContents());
+        assertEquals(0, selection.getBufferBeginIndex());
         assertEquals(0, selection.getBeginIndex());
         assertEquals(0, selection.getEndIndex());
     }
@@ -40,23 +40,6 @@ class EngineTest {
 
         assertEquals(string1, engine.getBufferContents());
         assertEquals(string1.length(), selection.getBeginIndex(), selection.getEndIndex());
-    }
-
-    @Test
-    @DisplayName("Clipboard should contain last copied/cut text")
-    void getClipboardContents() {
-        //the quick brown fox jumps over the lazy dog|><|
-        engine.insert(string1);
-
-        //|>the quick brown fox jumps over the lazy dog<|
-        selection = engine.getSelection();
-        selection.setBeginIndex(selection.getBufferBeginIndex());
-        engine.copySelectedText();
-
-        assertEquals(string1, engine.getClipboardContents());
-        assertEquals(string1, engine.getBufferContents());
-        assertEquals(selection.getBufferBeginIndex(), selection.getBeginIndex());
-        assertEquals(string1.length(), selection.getEndIndex());
     }
 
     @Test
@@ -93,7 +76,6 @@ class EngineTest {
         assertEquals(string1, engine.getBufferContents());
         assertEquals(selection.getBufferBeginIndex(), selection.getBeginIndex());
         assertEquals(string1.length(), selection.getEndIndex());
-
     }
 
     @Test
@@ -115,7 +97,8 @@ class EngineTest {
 
         assertEquals(string1, engine.getClipboardContents());
         assertEquals(string1.concat(string1), engine.getBufferContents());
-        assertEquals(string1.length(), selection.getBeginIndex(), selection.getEndIndex());
+        assertEquals(string1.length(), selection.getBeginIndex());
+        assertEquals(string1.length(), selection.getEndIndex());
     }
 
     @Test
