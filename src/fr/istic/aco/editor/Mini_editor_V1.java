@@ -3,7 +3,6 @@ package fr.istic.aco.editor;
 import fr.istic.aco.editor.commands.*;
 
 public class Mini_editor_V1{
-
     private Engine engine;
     private UserInterface userInterface;
 
@@ -22,13 +21,15 @@ public class Mini_editor_V1{
     }
 
     public void configureCommands(){
-        userInterface.addCommand("Copy", new CopyCommand(engine));
-        userInterface.addCommand("Cut", new CutCommand(engine));
-        userInterface.addCommand("Paste", new PasteCommand(engine));
-        userInterface.addCommand("SelectAll", new SelectAllCommand(engine));
-        userInterface.addCommand("ExtLeft", new ExtendLeftSelectionCommand(engine));
-        userInterface.addCommand("ExtRight", new ExtendRightSelectionCommand(engine));
-        userInterface.addCommand("mvl", new MoveLeftSelectionCommand(engine));
-        userInterface.addCommand("mvr", new MoveRightSelectionCommand(engine));
+        userInterface.addCommand("copy", new CopyCommand(engine));
+        userInterface.addCommand("cut", new CutCommand(engine));
+        userInterface.addCommand("paste", new PasteCommand(engine));
+        userInterface.addCommand("selectall", new SelectAllCommand(engine));
+        userInterface.addCommand("extleft", new ExtendLeftSelectionCommand(engine));
+        userInterface.addCommand("extright", new ExtendRightSelectionCommand(engine));
+        userInterface.addCommand("left", new MoveLeftSelectionCommand(engine));
+        userInterface.addCommand("right", new MoveRightSelectionCommand(engine));
+        userInterface.addCommand("begin", new MoveBeginSelectionCommand(engine));
+        userInterface.addCommand("end", new MoveEndSelectionCommand(engine));
     }
 }

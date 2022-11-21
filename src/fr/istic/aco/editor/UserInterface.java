@@ -49,7 +49,6 @@ public interface UserInterface {
     /**
      * Function to display a text in the terminal
      * @param s the text to display
-     * @param maxLengthOfLine the number of characters to display per line
      */
-    void DisplayText(String s, int maxLengthOfLine);
+    void DisplayText(String s);
 }

@@ -13,6 +13,10 @@ import java.util.Map;
 public class UserInterfaceImpl implements UserInterface {
     private Map<String, Command> commands = new HashMap<>();
     private boolean stopLoop = false;
+    //TODO : Make it usefull
+    private char commandToken = '/';
+    private int charPerLine = 70;
+
     private InputStream inputStream;
     private BufferedReader bufferedReader;
     private Engine engine;
@@ -23,6 +27,9 @@ public class UserInterfaceImpl implements UserInterface {
 
     /**
      * The main loop for the text editor that takes commands or texts
+     *
+     * @throws IOException On input error
+     * @see IOException
      */
     @Override
     public void runInvokerLoop() {
@@ -38,12 +45,9 @@ public class UserInterfaceImpl implements UserInterface {
             if (userInput == null) {
                 break;
             }
-            //TODO: Use either if contains or if not null
-            if (commands.containsKey(userInput)) {
-                Command cmdToExecute = commands.get(userInput);
-                if (cmdToExecute != null) {
-                    cmdToExecute.execute();
-                }
+            if (commands.containsKey(userInput.toLowerCase())) {
+                Command cmdToExecute = commands.get(userInput.toLowerCase());
+                cmdToExecute.execute();
             } else {
                 engine.insert(userInput);
             }
@@ -58,6 +62,12 @@ public class UserInterfaceImpl implements UserInterface {
 //        stopLoop = true;
 //    }
 
+    /**
+     * Read from the bufferedReader
+     *
+     * @throws IOException On input error
+     * @see IOException
+     */
     private String readUserInput() throws IOException {
         return bufferedReader.readLine();
     }
@@ -65,7 +75,8 @@ public class UserInterfaceImpl implements UserInterface {
     /**
      * Set the inputStream and connect to the bufferReader
      *
-     * @param inputStream the InputStream to
+     * @param inputStream The InputStream to read from
+     * @throws IllegalArgumentException If the inputStream is null
      */
     @Override
     public void setReadStream(InputStream inputStream) {
@@ -79,15 +90,16 @@ public class UserInterfaceImpl implements UserInterface {
     /**
      * Add a Command in a hashmap
      *
-     * @param keyword name of the command
-     * @param command Command to add
+     * @param keyword Name of the command
+     * @param command Command object to add
+     * @hidden Command name is set to lowercase
      */
     @Override
     public void addCommand(String keyword, Command command) {
         if ((keyword == null) || (command == null)) {
             throw new IllegalArgumentException("null parameter");
         }
-        commands.put(keyword, command);
+        commands.put(commandToken + keyword.toLowerCase(), command);
     }
 
     /**
@@ -96,7 +108,7 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void DisplayBuffer() {
         System.out.println("========== Buffer ===========================================================");
-        DisplayText(engine.toString(), 70);
+        DisplayText(engine.toString());
     }
 
     /**
@@ -105,20 +117,19 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void DisplayClipboard() {
         System.out.println("========== Clipboard ========================================================");
-        DisplayText(engine.getClipboardContents(), 70);
+        DisplayText(engine.getClipboardContents());
     }
 
     /**
      * Function to display a text in the terminal
      *
      * @param s               the text to display
-     * @param maxLengthOfLine the number of characters to display per line
      */
     @Override
-    public void DisplayText(String s, int maxLengthOfLine) {
-        int lastLine = s.length() - s.length() % maxLengthOfLine;
-        for (int i = 0; i < lastLine; i += maxLengthOfLine) {
-            System.out.println("|   " + s.substring(i, i + maxLengthOfLine));
+    public void DisplayText(String s) {
+        int lastLine = s.length() - s.length() % charPerLine;
+        for (int i = 0; i < lastLine; i += charPerLine) {
+            System.out.println("|   " + s.substring(i, i + charPerLine));
         }
         System.out.println("|   " + s.substring(lastLine, s.length()));
     }
