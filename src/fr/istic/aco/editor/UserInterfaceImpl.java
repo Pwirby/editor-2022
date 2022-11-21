@@ -54,13 +54,13 @@ public class UserInterfaceImpl implements UserInterface {
         }
     }
 
-//    /**
-//     * Stop the main loop in runIvokerLoop and quit the application
-//    */
-//    @Override
-//    public void stopLoop() {
-//        stopLoop = true;
-//    }
+    /**
+     * Stop the main loop in runIvokerLoop and quit the application
+    */
+    @Override
+    public void stopLoop() {
+        stopLoop = true;
+    }
 
     /**
      * Read from the bufferedReader

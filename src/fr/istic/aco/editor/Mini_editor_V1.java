@@ -31,5 +31,6 @@ public class Mini_editor_V1{
         userInterface.addCommand("right", new MoveRightSelectionCommand(engine));
         userInterface.addCommand("begin", new MoveBeginSelectionCommand(engine));
         userInterface.addCommand("end", new MoveEndSelectionCommand(engine));
+        userInterface.addCommand("quit", new QuitCommand(userInterface));
     }
 }

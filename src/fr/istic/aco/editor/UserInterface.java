@@ -21,7 +21,7 @@ public interface UserInterface {
     /**
      * Stop the main loop in runIvokerLoop and quit the application
      */
-    //void stopLoop();
+    void stopLoop();
 
     /**
      * Set the inputStream and connect to the bufferReader
