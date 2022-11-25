@@ -24,6 +24,12 @@ public interface UserInterface {
     void stopLoop();
 
     /**
+     * Return the boolean of the runLoop
+     * @return stopLoop
+     */
+    boolean getStopLoop();
+
+    /**
      * Set the inputStream and connect to the bufferReader
      * @param inputStream the InputStream to
      */

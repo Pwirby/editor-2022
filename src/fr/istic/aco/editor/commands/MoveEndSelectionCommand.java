@@ -11,7 +11,7 @@ public class MoveEndSelectionCommand implements Command {
 
     @Override
     public void execute() {
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferEndIndex());
         engine.getSelection().setEndIndex(engine.getSelection().getBufferEndIndex());
+        engine.getSelection().setBeginIndex(engine.getSelection().getBufferEndIndex());
     }
 }

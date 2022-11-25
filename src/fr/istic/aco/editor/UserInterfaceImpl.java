@@ -33,7 +33,7 @@ public class UserInterfaceImpl implements UserInterface {
      */
     @Override
     public void runInvokerLoop() {
-        while (!stopLoop) {
+        while (!this.getStopLoop()) {
             DisplayBuffer();
             if (!engine.getClipboardContents().isEmpty()) DisplayClipboard();
             String userInput = null;
@@ -60,6 +60,11 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void stopLoop() {
         stopLoop = true;
+    }
+
+    @Override
+    public boolean getStopLoop(){
+        return stopLoop;
     }
 
     /**
