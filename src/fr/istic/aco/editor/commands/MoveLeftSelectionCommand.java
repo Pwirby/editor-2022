@@ -2,6 +2,9 @@ package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
 
+/**
+ * Command to move the selection to the left by one character
+ */
 public class MoveLeftSelectionCommand implements Command{
     private final Engine engine;
 

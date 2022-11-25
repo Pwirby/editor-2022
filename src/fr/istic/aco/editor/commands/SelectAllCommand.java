@@ -2,6 +2,9 @@ package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
 
+/**
+ * Command to select all the buffer content with the selection
+ */
 public class SelectAllCommand implements Command{
     private final Engine engine;
 

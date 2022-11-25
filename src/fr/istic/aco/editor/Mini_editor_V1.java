@@ -2,6 +2,9 @@ package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.*;
 
+/**
+ * Demo application of the MiniEdtior
+ */
 public class Mini_editor_V1{
     private Engine engine;
     private UserInterface userInterface;
@@ -11,6 +14,9 @@ public class Mini_editor_V1{
         miniEditor.run();
     }
 
+    /**
+     * Setting up of the engine and the user interface and launch of the editor
+     */
     private void run(){
         engine = new EngineImpl();
         userInterface = new UserInterfaceImpl(engine);
@@ -20,6 +26,9 @@ public class Mini_editor_V1{
         userInterface.runInvokerLoop();
     }
 
+    /**
+     * Setting up of the commands usable by the user
+     */
     public void configureCommands(){
         userInterface.addCommand("copy", new CopyCommand(engine));
         userInterface.addCommand("cut", new CutCommand(engine));

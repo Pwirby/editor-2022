@@ -13,13 +13,12 @@ import java.util.Map;
 public class UserInterfaceImpl implements UserInterface {
     private Map<String, Command> commands = new HashMap<>();
     private boolean stopLoop = false;
-    //TODO : Make it usefull
-    private char commandToken = '/';
-    private int charPerLine = 70;
+    private final char commandToken = '/';
+    private final int charPerLine = 70;
 
     private InputStream inputStream;
     private BufferedReader bufferedReader;
-    private Engine engine;
+    private final Engine engine;
 
     public UserInterfaceImpl(Engine engine) {
         this.engine = engine;
@@ -62,6 +61,10 @@ public class UserInterfaceImpl implements UserInterface {
         stopLoop = true;
     }
 
+    /**
+     * Return the boolean of the runLoop
+     * @return the stopLoop attribute
+     */
     @Override
     public boolean getStopLoop(){
         return stopLoop;
@@ -97,6 +100,7 @@ public class UserInterfaceImpl implements UserInterface {
      *
      * @param keyword Name of the command
      * @param command Command object to add
+     * @throws IllegalArgumentException if one the parameters is null
      * @hidden Command name is set to lowercase
      */
     @Override
@@ -128,7 +132,7 @@ public class UserInterfaceImpl implements UserInterface {
     /**
      * Function to display a text in the terminal
      *
-     * @param s               the text to display
+     * @param s Text to display
      */
     @Override
     public void DisplayText(String s) {

@@ -2,6 +2,9 @@ package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
 
+/**
+ * Command to set the selection at the begin of the buffer
+ */
 public class MoveBeginSelectionCommand implements Command {
     private final Engine engine;
 

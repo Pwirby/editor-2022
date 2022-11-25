@@ -2,6 +2,9 @@ package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
 
+/**
+ * Command to paste the content of the clipboard the selection
+ */
 public class PasteCommand implements Command{
     private final Engine engine;
 

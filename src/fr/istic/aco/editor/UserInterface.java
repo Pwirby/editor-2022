@@ -2,6 +2,7 @@ package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.Command;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -25,20 +26,23 @@ public interface UserInterface {
 
     /**
      * Return the boolean of the runLoop
-     * @return stopLoop
+     * @return the stopLoop attribute
      */
     boolean getStopLoop();
 
     /**
      * Set the inputStream and connect to the bufferReader
-     * @param inputStream the InputStream to
+     * @param inputStream The InputStream to read from
+     * @throws IllegalArgumentException If the inputStream is null
      */
     void setReadStream(InputStream inputStream);
 
     /**
      * Add a Command in a hashmap
-     * @param keyword name of the command
-     * @param command Command to add
+     * @param keyword Name of the command
+     * @param command Command object to add
+     * @throws IllegalArgumentException if one the parameters is null
+     * @hidden Command name is set to lowercase
      */
     void addCommand(String keyword, Command command);
 
@@ -54,7 +58,7 @@ public interface UserInterface {
 
     /**
      * Function to display a text in the terminal
-     * @param s the text to display
+     * @param s Text to display
      */
     void DisplayText(String s);
 }
