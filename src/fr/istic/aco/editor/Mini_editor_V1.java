@@ -2,9 +2,6 @@ package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.*;
 
-/**
- * Demo application of the MiniEdtior
- */
 public class Mini_editor_V1{
     private Engine engine;
     private UserInterface userInterface;
