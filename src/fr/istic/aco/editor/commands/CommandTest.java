@@ -57,9 +57,8 @@ public class CommandTest {
 
         engine.insert(string1);
         command.execute();
-        //TODO : Be more precise about the assertion
-        //string.lenght = 43 selection.beginindex = 42
-        assertEquals(string1.length()-1, engine.getSelection().getBeginIndex());
+
+        assertEquals(engine.getBufferContents().length()-1, engine.getSelection().getBeginIndex());
     }
 
     @Test
@@ -73,8 +72,7 @@ public class CommandTest {
 
         command.execute();
 
-        //TODO : Be more precise about the assertion ?
-        assertEquals(1, engine.getSelection().getEndIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getEndIndex());
     }
 
     @Test
