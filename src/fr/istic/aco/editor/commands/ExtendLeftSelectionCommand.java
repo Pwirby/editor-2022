@@ -3,7 +3,7 @@ package fr.istic.aco.editor.commands;
 import fr.istic.aco.editor.Engine;
 
 /**
- * Command to extend the selection to the left by one caracter
+ * Command to extend the selection to the left by one character
  */
 public class ExtendLeftSelectionCommand implements Command{
     private final Engine engine;
