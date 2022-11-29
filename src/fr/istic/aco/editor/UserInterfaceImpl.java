@@ -125,7 +125,8 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     /**
-     * Display a text in the terminal line by line
+     * Print the text, line by line, where the CharPerLine
+     * attribute is the maximum length of a line
      *
      * @param s Text to display
      */
@@ -135,6 +136,6 @@ public class UserInterfaceImpl implements UserInterface {
         for (int i = 0; i < lastLine; i += charPerLine) {
             System.out.println("|   " + s.substring(i, i + charPerLine));
         }
-        System.out.println("|   " + s.substring(lastLine, s.length()));
+        System.out.println("|   " + s.substring(lastLine));
     }
 }
