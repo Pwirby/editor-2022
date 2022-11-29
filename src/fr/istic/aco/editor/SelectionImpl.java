@@ -7,22 +7,17 @@ public class SelectionImpl implements Selection {
     private int bufferBeginIndex;
 
     public SelectionImpl(StringBuffer buffer) {
-        this.beginIndex = this.endIndex = this.bufferBeginIndex = 0;
-        this.buffer = buffer;
+        this(buffer, 0);
     }
 
-    public SelectionImpl(StringBuffer buffer, int beginIndex, int endIndex) {
-        this(buffer, 0, beginIndex, endIndex);
-    }
+    public SelectionImpl(StringBuffer buffer, int bufferBeginIndex) {
+        if (bufferBeginIndex < 0)
+            throw new IllegalArgumentException("Buffer begin index must be >= 0");
+        if (bufferBeginIndex > buffer.length())
+            throw new IllegalArgumentException("Buffer begin index cannot be bigger than buffer length");
 
-    public SelectionImpl(StringBuffer buffer, int bufferBeginIndex, int beginIndex, int endIndex) {
         this.buffer = buffer;
-        this.bufferBeginIndex = bufferBeginIndex;
-        if (beginIndex > endIndex) throw new IllegalArgumentException("Begin index must be lesser or equal than end index");
-        checkIndexValidity(beginIndex);
-        checkIndexValidity(endIndex);
-        this.endIndex = endIndex;
-        this.beginIndex = beginIndex;
+        this.bufferBeginIndex = this.beginIndex = this.endIndex = bufferBeginIndex;
     }
 
     /**
@@ -101,6 +96,7 @@ public class SelectionImpl implements Selection {
 
     /**
      * Checks if the index is in the bounds of the buffer
+     *
      * @param index the index to verify
      * @throws IllegalArgumentException if the index is out of buffer's bound
      */
