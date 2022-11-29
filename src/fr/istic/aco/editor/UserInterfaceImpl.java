@@ -33,12 +33,7 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void runInvokerLoop() {
         while (!this.getStopLoop()) {
-            System.out.println("========== Buffer ===========================================================");
-            DisplayText(engine.toString());
-            if (!engine.getClipboardContents().isEmpty()) {
-                System.out.println("========== Clipboard ========================================================");
-                DisplayText(engine.getClipboardContents());
-            }
+            DisplayContent();
             String userInput = null;
             try {
                 userInput = readUserInput();
@@ -117,7 +112,20 @@ public class UserInterfaceImpl implements UserInterface {
 
 
     /**
-     * Function to display a text in the terminal
+     * Display the contents of the buffer and eventually
+     * the clipboard in the terminal
+     */
+    public void DisplayContent(){
+        System.out.println("========== Buffer ===========================================================");
+        DisplayText(engine.toString());
+        if (!engine.getClipboardContents().isEmpty()) {
+            System.out.println("========== Clipboard ========================================================");
+            DisplayText(engine.getClipboardContents());
+        }
+    }
+
+    /**
+     * Display a text in the terminal line by line
      *
      * @param s Text to display
      */
