@@ -1,8 +1,6 @@
 package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.Command;
-
-import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -45,16 +43,6 @@ public interface UserInterface {
      * @hidden Command name is set to lowercase
      */
     void addCommand(String keyword, Command command);
-
-    /**
-     * Display the content of the buffer of the engine
-     */
-    void DisplayBuffer();
-
-    /**
-     * Display the content of the clipboard of the engine
-     */
-    void DisplayClipboard();
 
     /**
      * Function to display a text in the terminal
