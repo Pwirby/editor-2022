@@ -11,7 +11,7 @@ import java.util.Map;
 
 
 public class UserInterfaceImpl implements UserInterface {
-    private Map<String, Command> commands = new HashMap<>();
+    private final Map<String, Command> commands = new HashMap<>();
     private boolean stopLoop = false;
     private final char commandToken = '/';
     private final int charPerLine = 70;
@@ -33,8 +33,12 @@ public class UserInterfaceImpl implements UserInterface {
     @Override
     public void runInvokerLoop() {
         while (!this.getStopLoop()) {
-            DisplayBuffer();
-            if (!engine.getClipboardContents().isEmpty()) DisplayClipboard();
+            System.out.println("========== Buffer ===========================================================");
+            DisplayText(engine.toString());
+            if (!engine.getClipboardContents().isEmpty()) {
+                System.out.println("========== Clipboard ========================================================");
+                DisplayText(engine.getClipboardContents());
+            }
             String userInput = null;
             try {
                 userInput = readUserInput();
@@ -62,11 +66,12 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     /**
-     * Return the boolean of the runLoop
-     * @return the stopLoop attribute
+     * Return the state of the runLoop
+     *
+     * @return true if the loop is stopped, false otherwise
      */
     @Override
-    public boolean getStopLoop(){
+    public boolean getStopLoop() {
         return stopLoop;
     }
 
@@ -100,7 +105,6 @@ public class UserInterfaceImpl implements UserInterface {
      *
      * @param keyword Name of the command
      * @param command Command object to add
-     * @throws IllegalArgumentException if one the parameters is null
      * @hidden Command name is set to lowercase
      */
     @Override
@@ -111,23 +115,6 @@ public class UserInterfaceImpl implements UserInterface {
         commands.put(commandToken + keyword.toLowerCase(), command);
     }
 
-    /**
-     * Display the content of the buffer of the engine
-     */
-    @Override
-    public void DisplayBuffer() {
-        System.out.println("========== Buffer ===========================================================");
-        DisplayText(engine.toString());
-    }
-
-    /**
-     * Display the content of the clipboard of the engine
-     */
-    @Override
-    public void DisplayClipboard() {
-        System.out.println("========== Clipboard ========================================================");
-        DisplayText(engine.getClipboardContents());
-    }
 
     /**
      * Function to display a text in the terminal
