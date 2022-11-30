@@ -1,6 +1,7 @@
 package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.Command;
+import fr.istic.aco.editor.commands.InsertCommand;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,8 +21,12 @@ public class UserInterfaceImpl implements UserInterface {
     private BufferedReader bufferedReader;
     private final Engine engine;
 
+    private String textToInsert;
+
     public UserInterfaceImpl(Engine engine) {
         this.engine = engine;
+
+        addCommand("insert", new InsertCommand(engine, this));
     }
 
     /**
@@ -47,7 +52,9 @@ public class UserInterfaceImpl implements UserInterface {
                 Command cmdToExecute = commands.get(userInput.toLowerCase());
                 cmdToExecute.execute();
             } else {
-                engine.insert(userInput);
+
+                setTextToInsert(userInput);
+                commands.get(commandToken+"insert").execute();
             }
         }
     }
@@ -138,4 +145,16 @@ public class UserInterfaceImpl implements UserInterface {
         }
         System.out.println("|   " + s.substring(lastLine));
     }
+
+    @Override
+    public void setTextToInsert(String s) {
+        textToInsert = s;
+    }
+
+    @Override
+    public String getTextToInsert() {
+        return this.textToInsert;
+    }
+
+
 }

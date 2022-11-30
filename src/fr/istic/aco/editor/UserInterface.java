@@ -49,4 +49,10 @@ public interface UserInterface {
      * @param s Text to display
      */
     void DisplayText(String s);
+
+
+    void setTextToInsert(String s);
+    String getTextToInsert();
+
+
 }
