@@ -46,7 +46,25 @@ public interface UserInterface {
 
     /**
      * Function to display a text in the terminal
+     * @param engine engine
+     */
+    void displayContent(Engine engine);
+
+    /**
+     * Function to display a text in the terminal
      * @param s Text to display
      */
-    void DisplayText(String s);
+    void displayText(String s);
+
+    /**
+     * Set the text used to insert text in the engine
+     * @param s Text to insert
+     */
+    void setTextToInsert(String s);
+
+    /**
+     * Provide the text to insert in the engine's buffer
+     * @return the text to insert
+     */
+    String getTextToInsert();
 }

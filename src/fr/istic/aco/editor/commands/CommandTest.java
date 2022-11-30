@@ -13,11 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommandTest {
     String string1 = "the quick brown fox jumps over the lazy dog";
     private Engine engine;
+    private UserInterface userInterface;
     private Command command;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         engine = new EngineImpl();
+        userInterface = new UserInterfaceImpl(engine);
     }
 
     @Test
@@ -53,10 +55,10 @@ public class CommandTest {
     @DisplayName("Extend the selection to the left by one character")
     void ExtendLeftCommand(){
         command = new ExtendLeftSelectionCommand(engine);
-        // the quick brown fox jumps over the lazy dog|><|
+
         engine.insert(string1);
         command.execute();
-        // the quick brown fox jumps over the lazy do|>g<|
+
         assertEquals(engine.getBufferContents().length()-1, engine.getSelection().getBeginIndex());
     }
 
@@ -64,23 +66,36 @@ public class CommandTest {
     @DisplayName("Extend the selection to the right by one character")
     void ExtendRightCommand(){
         command = new ExtendRightSelectionCommand(engine);
-        // |><|the quick brown fox jumps over the lazy dog
+
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-        // |>t<|he quick brown fox jumps over the lazy dog
+
         command.execute();
 
         assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getEndIndex());
+    }
+
+
+    @Test
+    @DisplayName("Insert a text inside the engine's buffer")
+    void InsertCommand(){
+        command = new InsertCommand(engine, userInterface);
+
+        userInterface.setTextToInsert(string1);
+
+        command.execute();
+
+        assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
     @DisplayName("Move the selection to the begin of the buffer")
     void MoveBeginSelectionCommand(){
         command = new MoveBeginSelectionCommand(engine);
-        // the quick brown fox jumps over the lazy dog|><|
+
         engine.insert(string1);
-        // |><|the quick brown fox jumps over the lazy dog
+
         command.execute();
 
         assertEquals(0, engine.getSelection().getBeginIndex());
@@ -91,11 +106,11 @@ public class CommandTest {
     @DisplayName("Move the selection to the end of the buffer")
     void MoveEndSelectionCommand(){
         command = new MoveEndSelectionCommand(engine);
-        // the quick brown fox jumps over the lazy dog|><|
+
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-        // |><|the quick brown fox jumps over the lazy dog
+
         command.execute();
 
         assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getBeginIndex());
@@ -106,9 +121,9 @@ public class CommandTest {
     @DisplayName("Move the selection to the left by one character")
     void MoveLeftSelectionCommand(){
         command = new MoveLeftSelectionCommand(engine);
-        // the quick brown fox jumps over the lazy dog|><|
+
         engine.insert(string1);
-        // the quick brown fox jumps over the lazy do|><|g
+
         command.execute();
 
         assertEquals(engine.getSelection().getBufferEndIndex()-1, engine.getSelection().getBeginIndex());
@@ -119,11 +134,11 @@ public class CommandTest {
     @DisplayName("Move the selection to the left by one character")
     void MoveRightSelectionCommand(){
         command = new MoveRightSelectionCommand(engine);
-        // |><|the quick brown fox jumps over the lazy dog
+
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-        // t|><|he quick brown fox jumps over the lazy dog
+
         command.execute();
 
         assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getBeginIndex());
@@ -138,7 +153,7 @@ public class CommandTest {
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
         engine.cutSelectedText();
-        // |><|the quick brown fox jumps over the lazy dog
+
         command.execute();
 
         assertEquals(string1, engine.getBufferContents());
@@ -148,7 +163,6 @@ public class CommandTest {
     @Test
     @DisplayName("Stop the program")
     void QuitCommand(){
-        UserInterface userInterface = new UserInterfaceImpl(engine);
         command = new QuitCommand(userInterface);
 
         command.execute();
@@ -160,9 +174,9 @@ public class CommandTest {
     @DisplayName("The selection should select the entire content of the buffer")
     void SelectAllCommand(){
         command = new SelectAllCommand(engine);
-        // the quick brown fox jumps over the lazy dog|><|
+
         engine.insert(string1);
-        // |>the quick brown fox jumps over the lazy dog<|
+
         command.execute();
 
         assertEquals(engine.getSelection().getBufferBeginIndex(), engine.getSelection().getBeginIndex());
