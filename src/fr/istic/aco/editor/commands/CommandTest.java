@@ -13,12 +13,13 @@ import static org.junit.jupiter.api.Assertions.*;
 public class CommandTest {
     String string1 = "the quick brown fox jumps over the lazy dog";
     private Engine engine;
-
+    private UserInterface userInterface;
     private Command command;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
         engine = new EngineImpl();
+        userInterface = new UserInterfaceImpl(engine);
     }
 
     @Test
@@ -57,9 +58,8 @@ public class CommandTest {
 
         engine.insert(string1);
         command.execute();
-        //TODO : Be more precise about the assertion
-        //string.lenght = 43 selection.beginindex = 42
-        assertEquals(string1.length()-1, engine.getSelection().getBeginIndex());
+
+        assertEquals(engine.getBufferContents().length()-1, engine.getSelection().getBeginIndex());
     }
 
     @Test
@@ -73,8 +73,20 @@ public class CommandTest {
 
         command.execute();
 
-        //TODO : Be more precise about the assertion ?
-        assertEquals(1, engine.getSelection().getEndIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getEndIndex());
+    }
+
+
+    @Test
+    @DisplayName("Insert a text inside the engine's buffer")
+    void InsertCommand(){
+        command = new InsertCommand(engine, userInterface);
+
+        userInterface.setTextToInsert(string1);
+
+        command.execute();
+
+        assertEquals(string1, engine.getBufferContents());
     }
 
     @Test
@@ -151,7 +163,6 @@ public class CommandTest {
     @Test
     @DisplayName("Stop the program")
     void QuitCommand(){
-        UserInterface userInterface = new UserInterfaceImpl(engine);
         command = new QuitCommand(userInterface);
 
         command.execute();
