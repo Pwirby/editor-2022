@@ -27,6 +27,7 @@ public class Mini_editor_V1{
      * Setting up of the commands usable by the user
      */
     public void configureCommands(){
+        userInterface.addCommand("delete", new DeleteCommand(engine));
         userInterface.addCommand("copy", new CopyCommand(engine));
         userInterface.addCommand("cut", new CutCommand(engine));
         userInterface.addCommand("paste", new PasteCommand(engine));
