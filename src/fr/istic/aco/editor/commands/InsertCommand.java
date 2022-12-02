@@ -2,6 +2,7 @@ package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.UserInterface;
+import fr.istic.aco.editor.mementos.Memento;
 
 public class InsertCommand implements Command{
     private final Engine engine;
@@ -15,5 +16,15 @@ public class InsertCommand implements Command{
     @Override
     public void execute() {
         engine.insert(userInterface.getTextToInsert());
+    }
+
+    @Override
+    public void setMemento(Memento m) {
+
+    }
+
+    @Override
+    public Memento getMemento() {
+        return null;
     }
 }
