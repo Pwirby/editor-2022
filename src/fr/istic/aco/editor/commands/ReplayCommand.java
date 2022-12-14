@@ -17,9 +17,7 @@ public class ReplayCommand implements Command{
     }
     @Override
     public void setMemento(Memento m) {
-
     }
-
     @Override
     public Memento getMemento() {
         return null;

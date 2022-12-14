@@ -12,14 +12,16 @@ public class RecorderImpl implements Recorder {
     private ArrayList<Pair> history;
     private boolean isRecording;
 
-    private class Pair {
-        Command command;
-        Memento memento;
+    /**
+     * Class used to associate a Command with its Memento
+     */
+    private static class Pair {
+        private final Command command;
+        private final Memento memento;
         Pair(Command c, Memento m) {
             this.command = c;
             this.memento = m;
         }
-
         private Command getCommand() {
             return command;
         }
@@ -27,37 +29,48 @@ public class RecorderImpl implements Recorder {
             return memento;
         }
     }
+
     public RecorderImpl(){
         history = new ArrayList<Pair>();
         isRecording = false;
     }
 
+    /**
+     * Store a command with its memento into a history
+     * @param c The command to store
+     */
     @Override
     public void save(Command c) {
         if(isRecording)
             history.add(new Pair(c, c.getMemento()));
-        for (Pair pair : history) {
-            System.out.println(pair.command.toString() + " : " + pair.memento.getState());
-        }
     }
 
+    /**
+     * Starts the recording of commands and empties the history
+     */
     @Override
     public void start() {
         isRecording = true;
         history = new ArrayList<Pair>();
     }
 
+    /**
+     * Stop the recording of commands
+     */
     @Override
     public void stop() {
         isRecording = false;
     }
 
+    /**
+     * Execute recorded commands in history, if it's not recording
+     */
     @Override
     public void replay() {
         if (!isRecording){
-            for (int i = 0; i < history.size(); i++) {
-                history.get(i).getCommand().setMemento(history.get(i).getMemento());
-                history.get(i).getCommand().execute();
+            for (Pair pair : history) {
+                pair.getCommand().setMemento(pair.getMemento());
+                pair.getCommand().execute();
             }
         }
     }
