@@ -3,6 +3,7 @@ package fr.istic.aco.editor;
 import fr.istic.aco.editor.commands.Command;
 import fr.istic.aco.editor.commands.DisplayCommand;
 import fr.istic.aco.editor.commands.InsertCommand;
+import fr.istic.aco.editor.mementos.Recorder;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -20,9 +21,9 @@ public class UserInterfaceImpl implements UserInterface {
     private BufferedReader bufferedReader;
     private String textToInsert;
 
-    public UserInterfaceImpl(Engine engine) {
+    public UserInterfaceImpl(Engine engine, Recorder recorder) {
         textToInsert = engine.getBufferContents();
-        addCommand("insert", new InsertCommand(engine, this));
+        addCommand("insert", new InsertCommand(engine, this, recorder));
         addCommand("display", new DisplayCommand(engine, this));
     }
 

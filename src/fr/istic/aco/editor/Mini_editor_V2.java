@@ -1,13 +1,16 @@
 package fr.istic.aco.editor;
 
 import fr.istic.aco.editor.commands.*;
+import fr.istic.aco.editor.mementos.Recorder;
+import fr.istic.aco.editor.mementos.RecorderImpl;
 
-public class Mini_editor_V1{
+public class Mini_editor_V2 {
     private Engine engine;
     private UserInterface userInterface;
+    private Recorder recorder;
 
     public static void main(String[] args){
-        Mini_editor_V1 miniEditor = new Mini_editor_V1();
+        Mini_editor_V2 miniEditor = new Mini_editor_V2();
         miniEditor.run();
     }
 
@@ -16,7 +19,8 @@ public class Mini_editor_V1{
      */
     private void run(){
         engine = new EngineImpl();
-        userInterface = new UserInterfaceImpl(engine);
+        recorder = new RecorderImpl();
+        userInterface = new UserInterfaceImpl(engine, recorder);
 
         userInterface.setReadStream(System.in);
         configureCommands();
@@ -38,5 +42,9 @@ public class Mini_editor_V1{
         userInterface.addCommand("begin", new MoveBeginSelectionCommand(engine));
         userInterface.addCommand("end", new MoveEndSelectionCommand(engine));
         userInterface.addCommand("quit", new QuitCommand(userInterface));
+
+        userInterface.addCommand("replay", new ReplayCommand(recorder));
+        userInterface.addCommand("startrec", new StartRecordCommand(recorder));
+        userInterface.addCommand("stoprec", new StopRecordCommand(recorder));
     }
 }

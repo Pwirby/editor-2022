@@ -3,18 +3,18 @@ package fr.istic.aco.editor.commands;
 import fr.istic.aco.editor.mementos.Memento;
 import fr.istic.aco.editor.mementos.Recorder;
 
-public class ReplayCommand implements Command{
+public class StartRecordCommand implements Command{
+    private final Recorder recorder;
 
-    private Recorder recorder;
-
-    public ReplayCommand(Recorder recorder){
+    public StartRecordCommand(Recorder recorder){
         this.recorder = recorder;
     }
 
     @Override
     public void execute() {
-        recorder.replay();
+        recorder.start();
     }
+
     @Override
     public void setMemento(Memento m) {
 

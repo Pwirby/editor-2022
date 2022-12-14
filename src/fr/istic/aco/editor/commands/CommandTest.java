@@ -4,6 +4,8 @@ import fr.istic.aco.editor.Engine;
 import fr.istic.aco.editor.EngineImpl;
 import fr.istic.aco.editor.UserInterface;
 import fr.istic.aco.editor.UserInterfaceImpl;
+import fr.istic.aco.editor.mementos.Recorder;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -14,12 +16,13 @@ public class CommandTest {
     String string1 = "the quick brown fox jumps over the lazy dog";
     private Engine engine;
     private UserInterface userInterface;
+    private Recorder recorder;
     private Command command;
 
-    @org.junit.jupiter.api.BeforeEach
+    @BeforeEach
     void setUp() {
         engine = new EngineImpl();
-        userInterface = new UserInterfaceImpl(engine);
+        userInterface = new UserInterfaceImpl(engine, recorder);
     }
 
     @Test
@@ -80,7 +83,7 @@ public class CommandTest {
     @Test
     @DisplayName("Insert a text inside the engine's buffer")
     void InsertCommand(){
-        command = new InsertCommand(engine, userInterface);
+        command = new InsertCommand(engine, userInterface, recorder);
 
         userInterface.setTextToInsert(string1);
 

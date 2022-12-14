@@ -4,8 +4,13 @@ public class InsertMemento implements Memento{
 
     private String textToInsert;
 
-    public InsertMemento(String textToInsert) {
-        this.textToInsert = textToInsert;
+    public InsertMemento() {
+
+    }
+
+    @Override
+    public String getState(){
+        return getTextToInsert();
     }
 
     public String getTextToInsert() {
