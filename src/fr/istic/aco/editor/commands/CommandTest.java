@@ -151,7 +151,7 @@ public class CommandTest {
     @Test
     @DisplayName("Paste the content of the clipboard inside the buffer")
     void PasteCommand(){
-        command = new PasteCommand(engine);
+        command = new PasteCommand(engine, userInterface, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());

@@ -33,7 +33,7 @@ public class Mini_editor_V2 {
     public void configureCommands(){
         userInterface.addCommand("copy", new CopyCommand(engine));
         userInterface.addCommand("cut", new CutCommand(engine));
-        userInterface.addCommand("paste", new PasteCommand(engine));
+        userInterface.addCommand("paste", new PasteCommand(engine, userInterface, recorder));
         userInterface.addCommand("selectall", new SelectAllCommand(engine));
         userInterface.addCommand("extleft", new ExtendLeftSelectionCommand(engine));
         userInterface.addCommand("extright", new ExtendRightSelectionCommand(engine));
