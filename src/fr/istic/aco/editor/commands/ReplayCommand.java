@@ -4,8 +4,7 @@ import fr.istic.aco.editor.mementos.Memento;
 import fr.istic.aco.editor.mementos.Recorder;
 
 public class ReplayCommand implements Command{
-
-    private Recorder recorder;
+    private final Recorder recorder;
 
     public ReplayCommand(Recorder recorder){
         this.recorder = recorder;

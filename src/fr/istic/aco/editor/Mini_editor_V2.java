@@ -31,20 +31,20 @@ public class Mini_editor_V2 {
      * Setting up of the commands usable by the user
      */
     public void configureCommands(){
-        userInterface.addCommand("copy", new CopyCommand(engine));
-        userInterface.addCommand("cut", new CutCommand(engine));
+        userInterface.addCommand("copy", new CopyCommand(engine, recorder));
+        userInterface.addCommand("cut", new CutCommand(engine, recorder));
         userInterface.addCommand("paste", new PasteCommand(engine, userInterface, recorder));
-        userInterface.addCommand("selectall", new SelectAllCommand(engine));
-        userInterface.addCommand("extleft", new ExtendLeftSelectionCommand(engine));
-        userInterface.addCommand("extright", new ExtendRightSelectionCommand(engine));
-        userInterface.addCommand("left", new MoveLeftSelectionCommand(engine));
-        userInterface.addCommand("right", new MoveRightSelectionCommand(engine));
-        userInterface.addCommand("begin", new MoveBeginSelectionCommand(engine));
-        userInterface.addCommand("end", new MoveEndSelectionCommand(engine));
+        userInterface.addCommand("selectall", new SelectAllCommand(engine, recorder));
+        userInterface.addCommand("extleft", new ExtendLeftSelectionCommand(engine, recorder));
+        userInterface.addCommand("extright", new ExtendRightSelectionCommand(engine, recorder));
+        userInterface.addCommand("left", new MoveLeftSelectionCommand(engine, recorder));
+        userInterface.addCommand("right", new MoveRightSelectionCommand(engine, recorder));
+        userInterface.addCommand("begin", new MoveBeginSelectionCommand(engine, recorder));
+        userInterface.addCommand("end", new MoveEndSelectionCommand(engine, recorder));
         userInterface.addCommand("quit", new QuitCommand(userInterface));
 
         userInterface.addCommand("replay", new ReplayCommand(recorder));
-        userInterface.addCommand("startrec", new StartRecordCommand(recorder));
-        userInterface.addCommand("stoprec", new StopRecordCommand(recorder));
+        userInterface.addCommand("start", new StartRecordCommand(recorder));
+        userInterface.addCommand("stop", new StopRecordCommand(recorder));
     }
 }

@@ -5,6 +5,7 @@ import fr.istic.aco.editor.EngineImpl;
 import fr.istic.aco.editor.UserInterface;
 import fr.istic.aco.editor.UserInterfaceImpl;
 import fr.istic.aco.editor.mementos.Recorder;
+import fr.istic.aco.editor.mementos.RecorderImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,13 +23,14 @@ public class CommandTest {
     @BeforeEach
     void setUp() {
         engine = new EngineImpl();
+        recorder = new RecorderImpl();
         userInterface = new UserInterfaceImpl(engine, recorder);
     }
 
     @Test
     @DisplayName("Text within the selection should be copied in clipboard")
     void CopyCommand(){
-        command = new CopyCommand(engine);
+        command = new CopyCommand(engine, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
@@ -42,7 +44,7 @@ public class CommandTest {
     @Test
     @DisplayName("Text within selection should be copied in clipboard and removed in the buffer")
     void CutCommand(){
-        command = new CutCommand(engine);
+        command = new CutCommand(engine, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
@@ -57,7 +59,7 @@ public class CommandTest {
     @Test
     @DisplayName("Extend the selection to the left by one character")
     void ExtendLeftCommand(){
-        command = new ExtendLeftSelectionCommand(engine);
+        command = new ExtendLeftSelectionCommand(engine, recorder);
 
         engine.insert(string1);
         command.execute();
@@ -68,7 +70,7 @@ public class CommandTest {
     @Test
     @DisplayName("Extend the selection to the right by one character")
     void ExtendRightCommand(){
-        command = new ExtendRightSelectionCommand(engine);
+        command = new ExtendRightSelectionCommand(engine, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
@@ -95,7 +97,7 @@ public class CommandTest {
     @Test
     @DisplayName("Move the selection to the begin of the buffer")
     void MoveBeginSelectionCommand(){
-        command = new MoveBeginSelectionCommand(engine);
+        command = new MoveBeginSelectionCommand(engine, recorder);
 
         engine.insert(string1);
 
@@ -108,7 +110,7 @@ public class CommandTest {
     @Test
     @DisplayName("Move the selection to the end of the buffer")
     void MoveEndSelectionCommand(){
-        command = new MoveEndSelectionCommand(engine);
+        command = new MoveEndSelectionCommand(engine, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
@@ -123,7 +125,7 @@ public class CommandTest {
     @Test
     @DisplayName("Move the selection to the left by one character")
     void MoveLeftSelectionCommand(){
-        command = new MoveLeftSelectionCommand(engine);
+        command = new MoveLeftSelectionCommand(engine, recorder);
 
         engine.insert(string1);
 
@@ -136,7 +138,7 @@ public class CommandTest {
     @Test
     @DisplayName("Move the selection to the left by one character")
     void MoveRightSelectionCommand(){
-        command = new MoveRightSelectionCommand(engine);
+        command = new MoveRightSelectionCommand(engine, recorder);
 
         engine.insert(string1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
@@ -176,7 +178,7 @@ public class CommandTest {
     @Test
     @DisplayName("The selection should select the entire content of the buffer")
     void SelectAllCommand(){
-        command = new SelectAllCommand(engine);
+        command = new SelectAllCommand(engine, recorder);
 
         engine.insert(string1);
 

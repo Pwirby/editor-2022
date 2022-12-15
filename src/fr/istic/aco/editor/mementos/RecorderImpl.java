@@ -1,12 +1,8 @@
 package fr.istic.aco.editor.mementos;
 
 import fr.istic.aco.editor.commands.Command;
-import fr.istic.aco.editor.mementos.Memento;
-import fr.istic.aco.editor.mementos.Recorder;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
 
 public class RecorderImpl implements Recorder {
     private ArrayList<Pair> history;
@@ -31,7 +27,7 @@ public class RecorderImpl implements Recorder {
     }
 
     public RecorderImpl(){
-        history = new ArrayList<Pair>();
+        history = new ArrayList<>();
         isRecording = false;
     }
 
@@ -51,7 +47,7 @@ public class RecorderImpl implements Recorder {
     @Override
     public void start() {
         isRecording = true;
-        history = new ArrayList<Pair>();
+        history = new ArrayList<>();
     }
 
     /**
@@ -73,5 +69,14 @@ public class RecorderImpl implements Recorder {
                 pair.getCommand().execute();
             }
         }
+    }
+
+    public String toString(){
+        StringBuilder str = new StringBuilder("Commands :\n");
+        for (Pair pair : history) {
+
+            str.append("    ").append(pair.getCommand().toString()).append("\n");
+        }
+        return str.toString();
     }
 }
