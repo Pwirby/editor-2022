@@ -18,39 +18,49 @@ public class CommandTest {
     private Engine engine;
     private UserInterface userInterface;
     private Recorder recorder;
-    private Command command;
+    private Command insert, copy, cut, paste, quit;
+    private Command moveBegin, moveEnd, selectAll, extendLeft, extendRight, moveLeft, moveRight;
 
     @BeforeEach
     void setUp() {
         engine = new EngineImpl();
         recorder = new RecorderImpl();
         userInterface = new UserInterfaceImpl(engine, recorder);
+
+        insert = new InsertCommand(engine, userInterface, recorder);
+        copy = new CopyCommand(engine, recorder);
+        cut = new CutCommand(engine, recorder);
+        paste = new PasteCommand(engine, userInterface, recorder);
+        quit = new QuitCommand(userInterface);
+
+        selectAll = new SelectAllCommand(engine, recorder);
+        moveLeft = new MoveLeftSelectionCommand(engine, recorder);
+        moveRight = new MoveRightSelectionCommand(engine, recorder);
+        extendLeft = new ExtendLeftSelectionCommand(engine, recorder);
+        extendRight = new ExtendRightSelectionCommand(engine, recorder);
+        moveBegin = new MoveBeginSelectionCommand(engine, recorder);
+        moveEnd = new MoveEndSelectionCommand(engine, recorder);
+        // the quick brown fox jumps over the lazy dog|><|
+        engine.insert(string1);
     }
 
     @Test
     @DisplayName("Text within the selection should be copied in clipboard")
-    void CopyCommand(){
-        command = new CopyCommand(engine, recorder);
-
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.getSelection().setEndIndex(engine.getSelection().getBufferEndIndex());
-
-        command.execute();
+    void CopyCommand() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        copy.execute();
 
         assertEquals(string1, engine.getClipboardContents());
     }
 
     @Test
     @DisplayName("Text within selection should be copied in clipboard and removed in the buffer")
-    void CutCommand(){
-        command = new CutCommand(engine, recorder);
-
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.getSelection().setEndIndex(engine.getSelection().getBufferEndIndex());
-
-        command.execute();
+    void CutCommand() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        // |><|
+        cut.execute();
 
         assertEquals(string1, engine.getClipboardContents());
         assertEquals("", engine.getBufferContents());
@@ -58,50 +68,41 @@ public class CommandTest {
 
     @Test
     @DisplayName("Extend the selection to the left by one character")
-    void ExtendLeftCommand(){
-        command = new ExtendLeftSelectionCommand(engine, recorder);
+    void ExtendLeftCommand() {
+        // the quick brown fox jumps over the lazy do|>g<|
+        extendLeft.execute();
 
-        engine.insert(string1);
-        command.execute();
-
-        assertEquals(engine.getBufferContents().length()-1, engine.getSelection().getBeginIndex());
+        assertEquals(engine.getBufferContents().length() - 1, engine.getSelection().getBeginIndex());
     }
 
     @Test
     @DisplayName("Extend the selection to the right by one character")
-    void ExtendRightCommand(){
-        command = new ExtendRightSelectionCommand(engine, recorder);
+    void ExtendRightCommand() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        // |>t<|he quick brown fox jumps over the lazy dog
+        extendRight.execute();
 
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-
-        command.execute();
-
-        assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getEndIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 1, engine.getSelection().getEndIndex());
     }
 
 
     @Test
     @DisplayName("Insert a text inside the engine's buffer")
-    void InsertCommand(){
-        command = new InsertCommand(engine, userInterface, recorder);
-
+    void InsertCommand() {
+        // the quick brown fox jumps over the lazy dog|><|
         userInterface.setTextToInsert(string1);
+        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
+        insert.execute();
 
-        command.execute();
-
-        assertEquals(string1, engine.getBufferContents());
+        assertEquals(string1+string1, engine.getBufferContents());
     }
 
     @Test
     @DisplayName("Move the selection to the begin of the buffer")
-    void MoveBeginSelectionCommand(){
-        command = new MoveBeginSelectionCommand(engine, recorder);
-
-        engine.insert(string1);
-
-        command.execute();
+    void MoveBeginSelectionCommand() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
 
         assertEquals(0, engine.getSelection().getBeginIndex());
         assertEquals(0, engine.getSelection().getEndIndex());
@@ -109,14 +110,11 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the end of the buffer")
-    void MoveEndSelectionCommand(){
-        command = new MoveEndSelectionCommand(engine, recorder);
-
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-
-        command.execute();
+    void MoveEndSelectionCommand() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        // the quick brown fox jumps over the lazy dog|><|
+        moveEnd.execute();
 
         assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getBeginIndex());
         assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getEndIndex());
@@ -124,42 +122,35 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the left by one character")
-    void MoveLeftSelectionCommand(){
-        command = new MoveLeftSelectionCommand(engine, recorder);
+    void MoveLeftSelectionCommand() {
+        // the quick brown fox jumps over the lazy do|><|g
+        moveLeft.execute();
 
-        engine.insert(string1);
-
-        command.execute();
-
-        assertEquals(engine.getSelection().getBufferEndIndex()-1, engine.getSelection().getBeginIndex());
-        assertEquals(engine.getSelection().getBufferEndIndex()-1, engine.getSelection().getEndIndex());
+        assertEquals(engine.getSelection().getBufferEndIndex() - 1, engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferEndIndex() - 1, engine.getSelection().getEndIndex());
     }
 
     @Test
     @DisplayName("Move the selection to the left by one character")
-    void MoveRightSelectionCommand(){
-        command = new MoveRightSelectionCommand(engine, recorder);
+    void MoveRightSelectionCommand() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        // t|><|he quick brown fox jumps over the lazy dog
+        moveRight.execute();
 
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
-
-        command.execute();
-
-        assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getBeginIndex());
-        assertEquals(engine.getSelection().getBufferBeginIndex()+1, engine.getSelection().getEndIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 1, engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 1, engine.getSelection().getEndIndex());
     }
 
     @Test
     @DisplayName("Paste the content of the clipboard inside the buffer")
-    void PasteCommand(){
-        command = new PasteCommand(engine, userInterface, recorder);
-
-        engine.insert(string1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBufferBeginIndex());
-        engine.cutSelectedText();
-
-        command.execute();
+    void PasteCommand() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        // |><|
+        cut.execute();
+        // the quick brown fox jumps over the lazy dog|><|
+        paste.execute();
 
         assertEquals(string1, engine.getBufferContents());
         assertEquals(string1, engine.getClipboardContents());
@@ -167,25 +158,19 @@ public class CommandTest {
 
     @Test
     @DisplayName("Stop the program")
-    void QuitCommand(){
-        command = new QuitCommand(userInterface);
-
-        command.execute();
+    void QuitCommand() {
+        quit.execute();
 
         assertTrue(userInterface.getStopLoop());
     }
 
     @Test
     @DisplayName("The selection should select the entire content of the buffer")
-    void SelectAllCommand(){
-        command = new SelectAllCommand(engine, recorder);
-
-        engine.insert(string1);
-
-        command.execute();
+    void SelectAllCommand() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
 
         assertEquals(engine.getSelection().getBufferBeginIndex(), engine.getSelection().getBeginIndex());
         assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getEndIndex());
-
     }
 }
