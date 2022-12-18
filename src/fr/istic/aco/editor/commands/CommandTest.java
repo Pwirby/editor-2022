@@ -46,7 +46,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Text within the selection should be copied in clipboard")
-    void CopyCommand() {
+    void CopyCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
         copy.execute();
@@ -56,7 +56,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Text within selection should be copied in clipboard and removed in the buffer")
-    void CutCommand() {
+    void CutCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
         // |><|
@@ -68,7 +68,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Extend the selection to the left by one character")
-    void ExtendLeftCommand() {
+    void ExtendLeftCommandTest() {
         // the quick brown fox jumps over the lazy do|>g<|
         extendLeft.execute();
 
@@ -77,7 +77,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Extend the selection to the right by one character")
-    void ExtendRightCommand() {
+    void ExtendRightCommandTest() {
         // |><|the quick brown fox jumps over the lazy dog
         moveBegin.execute();
         // |>t<|he quick brown fox jumps over the lazy dog
@@ -89,7 +89,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Insert a text inside the engine's buffer")
-    void InsertCommand() {
+    void InsertCommandTest() {
         // the quick brown fox jumps over the lazy dog|><|
         userInterface.setTextToInsert(string1);
         // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
@@ -100,7 +100,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the begin of the buffer")
-    void MoveBeginSelectionCommand() {
+    void MoveBeginSelectionCommandTest() {
         // |><|the quick brown fox jumps over the lazy dog
         moveBegin.execute();
 
@@ -110,7 +110,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the end of the buffer")
-    void MoveEndSelectionCommand() {
+    void MoveEndSelectionCommandTest() {
         // |><|the quick brown fox jumps over the lazy dog
         moveBegin.execute();
         // the quick brown fox jumps over the lazy dog|><|
@@ -122,7 +122,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the left by one character")
-    void MoveLeftSelectionCommand() {
+    void MoveLeftSelectionCommandTest() {
         // the quick brown fox jumps over the lazy do|><|g
         moveLeft.execute();
 
@@ -132,7 +132,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Move the selection to the left by one character")
-    void MoveRightSelectionCommand() {
+    void MoveRightSelectionCommandTest() {
         // |><|the quick brown fox jumps over the lazy dog
         moveBegin.execute();
         // t|><|he quick brown fox jumps over the lazy dog
@@ -144,7 +144,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Paste the content of the clipboard inside the buffer")
-    void PasteCommand() {
+    void PasteCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
         // |><|
@@ -158,7 +158,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("Stop the program")
-    void QuitCommand() {
+    void QuitCommandTest() {
         quit.execute();
 
         assertTrue(userInterface.getStopLoop());
@@ -166,7 +166,7 @@ public class CommandTest {
 
     @Test
     @DisplayName("The selection should select the entire content of the buffer")
-    void SelectAllCommand() {
+    void SelectAllCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
 
