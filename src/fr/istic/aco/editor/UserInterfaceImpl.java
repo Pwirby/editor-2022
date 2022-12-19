@@ -31,7 +31,6 @@ public class UserInterfaceImpl implements UserInterface {
         textToInsert = engine.getBufferContents();
         addCommand("insert", new InsertCommand(engine, this, recorder, undoManager));
         addCommand("display", new DisplayCommand(engine, this));
-        addCommand("store", new StoreCommand(undoManager));
     }
 
     /**
