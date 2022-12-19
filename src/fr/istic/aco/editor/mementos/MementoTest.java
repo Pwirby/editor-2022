@@ -15,6 +15,7 @@ public class MementoTest {
     private UndoManager undoManager;
     private Command insert, copy, cut, paste;
     private Command moveBegin, moveEnd, selectAll, extendLeft, extendRight, moveLeft, moveRight;
+    private Command undo, redo;
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -22,6 +23,9 @@ public class MementoTest {
         recorder = new RecorderImpl();
         undoManager = new UndoManager(engine);
         userInterface = new UserInterfaceImpl(engine, recorder, undoManager);
+
+        undo = new UndoCommand(undoManager);
+        redo = new RedoCommand(undoManager);
 
         insert = new InsertCommand(engine, userInterface, recorder, undoManager);
         copy = new CopyCommand(engine, recorder, undoManager);
@@ -193,5 +197,40 @@ public class MementoTest {
         recorder.replay();
         assertEquals(engine.getSelection().getBufferBeginIndex(), engine.getSelection().getBeginIndex());
         assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("Test the undo command")
+    void UndoCommandTest() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        // |><|
+        cut.execute();
+        // |>the quick brown fox jumps over the lazy dog<|
+        undo.execute();
+        assertEquals(engine.getSelection().getBeginIndex(), engine.getSelection().getBufferBeginIndex());
+        assertEquals(engine.getSelection().getEndIndex(), engine.getSelection().getBufferEndIndex());
+        assertEquals(string1, engine.getBufferContents());
+        assertEquals(string1, engine.getClipboardContents());
+    }
+
+    @Test
+    @DisplayName("Test the redo command")
+    void RedoCommandTest() {
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        copy.execute();
+        // the quick brown fox jumps over the lazy dog|><|
+        moveEnd.execute();
+        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
+        paste.execute();
+        // the quick brown fox jumps over the lazy dog|><|
+        undo.execute();
+        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
+        redo.execute();
+        assertEquals(engine.getSelection().getBeginIndex(), engine.getSelection().getBufferEndIndex());
+        assertEquals(engine.getSelection().getEndIndex(), engine.getSelection().getBufferEndIndex());
+        assertEquals(string1+string1, engine.getBufferContents());
+        assertEquals(string1, engine.getClipboardContents());
     }
 }
