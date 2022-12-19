@@ -29,7 +29,6 @@ public class ExtendRightSelectionCommand implements Command{
     public void execute() {
         undoManager.store();
         engine.getSelection().setEndIndex(engine.getSelection().getEndIndex()+1);
-        engine.getSelection().setEndIndex(engine.getSelection().getEndIndex() + 1);
         recorder.save(this);
     }
 
