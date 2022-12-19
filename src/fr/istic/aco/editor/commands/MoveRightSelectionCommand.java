@@ -1,6 +1,7 @@
 package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
+import fr.istic.aco.editor.UndoManager;
 import fr.istic.aco.editor.mementos.Memento;
 import fr.istic.aco.editor.mementos.Recorder;
 
@@ -10,6 +11,7 @@ import fr.istic.aco.editor.mementos.Recorder;
 public class MoveRightSelectionCommand implements Command {
     private final Engine engine;
     private final Recorder recorder;
+    private final UndoManager undoManager;
 
     /**
      * Move both selection's bounds to the right
@@ -17,13 +19,15 @@ public class MoveRightSelectionCommand implements Command {
      * @param engine
      * @param recorder
      */
-    public MoveRightSelectionCommand(Engine engine, Recorder recorder) {
+    public MoveRightSelectionCommand(Engine engine, Recorder recorder, UndoManager undoManager) {
         this.engine = engine;
         this.recorder = recorder;
+        this.undoManager = undoManager;
     }
 
     @Override
     public void execute() {
+        undoManager.store();
         engine.getSelection().setEndIndex(engine.getSelection().getEndIndex() + 1);
         engine.getSelection().setBeginIndex(engine.getSelection().getBeginIndex() + 1);
         recorder.save(this);

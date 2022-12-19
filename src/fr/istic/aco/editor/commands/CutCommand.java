@@ -1,6 +1,7 @@
 package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
+import fr.istic.aco.editor.UndoManager;
 import fr.istic.aco.editor.mementos.Memento;
 import fr.istic.aco.editor.mementos.Recorder;
 
@@ -10,14 +11,17 @@ import fr.istic.aco.editor.mementos.Recorder;
 public class CutCommand implements Command{
     private final Engine engine;
     private final Recorder recorder;
+    private final UndoManager undoManager;
 
-    public CutCommand(Engine engine, Recorder recorder) {
+    public CutCommand(Engine engine, Recorder recorder, UndoManager undoManager) {
         this.engine = engine;
         this.recorder = recorder;
+        this.undoManager = undoManager;
     }
 
     @Override
     public void execute(){
+        undoManager.store();
         engine.cutSelectedText();
         recorder.save(this);
     }
