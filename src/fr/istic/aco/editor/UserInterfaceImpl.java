@@ -3,7 +3,6 @@ package fr.istic.aco.editor;
 import fr.istic.aco.editor.commands.Command;
 import fr.istic.aco.editor.commands.DisplayCommand;
 import fr.istic.aco.editor.commands.InsertCommand;
-import fr.istic.aco.editor.commands.StoreCommand;
 import fr.istic.aco.editor.mementos.Recorder;
 
 import java.io.BufferedReader;
