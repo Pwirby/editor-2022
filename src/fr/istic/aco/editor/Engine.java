@@ -1,5 +1,7 @@
 package fr.istic.aco.editor;
 
+import fr.istic.aco.editor.mementos.Originator;
+
 /**
  * Main API for the text editing engine
  *
@@ -7,7 +9,7 @@ package fr.istic.aco.editor;
  * @version 1.0
  */
 
-public interface Engine {
+public interface Engine extends Originator {
 
     /**
      * Provides access to the selection control object

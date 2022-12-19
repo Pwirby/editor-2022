@@ -1,13 +1,16 @@
 package fr.istic.aco.editor;
 
+import fr.istic.aco.editor.mementos.EngineMemento;
+import fr.istic.aco.editor.mementos.Memento;
+
 public class EngineImpl implements Engine {
 
     private Selection selection;
     private StringBuffer buffer;
     private String clipboard;
 
-
     public EngineImpl() {
+
         this.buffer = new StringBuffer();
         this.selection = new SelectionImpl(buffer);
         this.clipboard = "";
@@ -102,12 +105,27 @@ public class EngineImpl implements Engine {
      */
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         for (int i = 0; i <= this.getBufferContents().length(); i++) {
-            if (i == this.selection.getBeginIndex()) result += "|>";
-            if (i == this.selection.getEndIndex()) result += "<|";
-            if (i < this.getBufferContents().length()) result += this.buffer.charAt(i);
+            if (i == this.selection.getBeginIndex()) result.append("|>");
+            if (i == this.selection.getEndIndex()) result.append("<|");
+            if (i < this.getBufferContents().length()) result.append(this.buffer.charAt(i));
         }
-        return result;
+        return result.toString();
+    }
+
+    @Override
+    public void setMemento(Memento m) {
+        EngineMemento em = (EngineMemento) m;
+        this.buffer = new StringBuffer();
+        this.selection = new SelectionImpl(buffer);
+        insert(em.getBufferContent());
+        this.selection.setEndIndex(em.getEndIndex());
+        this.selection.setBeginIndex(em.getBeginIndex());
+    }
+
+    @Override
+    public Memento getMemento() {
+        return new EngineMemento(getBufferContents(), getSelection().getBeginIndex(), getSelection().getEndIndex());
     }
 }

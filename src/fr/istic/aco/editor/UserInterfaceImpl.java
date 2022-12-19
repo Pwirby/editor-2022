@@ -3,6 +3,7 @@ package fr.istic.aco.editor;
 import fr.istic.aco.editor.commands.Command;
 import fr.istic.aco.editor.commands.DisplayCommand;
 import fr.istic.aco.editor.commands.InsertCommand;
+import fr.istic.aco.editor.commands.StoreCommand;
 import fr.istic.aco.editor.mementos.Recorder;
 
 import java.io.BufferedReader;
@@ -21,10 +22,11 @@ public class UserInterfaceImpl implements UserInterface {
     private BufferedReader bufferedReader;
     private String textToInsert;
 
-    public UserInterfaceImpl(Engine engine, Recorder recorder) {
+    public UserInterfaceImpl(Engine engine, Recorder recorder, UndoManager undoManager) {
         textToInsert = engine.getBufferContents();
-        addCommand("insert", new InsertCommand(engine, this, recorder));
+        addCommand("insert", new InsertCommand(engine, this, recorder, undoManager));
         addCommand("display", new DisplayCommand(engine, this));
+        addCommand("store", new StoreCommand(undoManager));
     }
 
     /**
@@ -46,6 +48,7 @@ public class UserInterfaceImpl implements UserInterface {
             if (userInput == null) {
                 break;
             }
+            //commands.get(commandToken+"store").execute();
             if (commands.containsKey(userInput.toLowerCase())) {
                 Command cmdToExecute = commands.get(userInput.toLowerCase());
                 cmdToExecute.execute();

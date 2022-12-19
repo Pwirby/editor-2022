@@ -1,6 +1,7 @@
 package fr.istic.aco.editor.commands;
 
 import fr.istic.aco.editor.Engine;
+import fr.istic.aco.editor.UndoManager;
 import fr.istic.aco.editor.UserInterface;
 import fr.istic.aco.editor.mementos.InsertMemento;
 import fr.istic.aco.editor.mementos.Memento;
@@ -10,22 +11,24 @@ public class InsertCommand implements Command{
     private final Engine engine;
     private final UserInterface userInterface;
     private final Recorder recorder;
+    private final UndoManager undoManager;
 
-    public InsertCommand(Engine engine, UserInterface userInterface, Recorder recorder) {
+    public InsertCommand(Engine engine, UserInterface userInterface, Recorder recorder, UndoManager undoManager) {
         this.engine = engine;
         this.userInterface = userInterface;
         this.recorder = recorder;
+        this.undoManager = undoManager;
     }
 
     @Override
     public void execute() {
+        undoManager.store();
         engine.insert(userInterface.getTextToInsert());
         recorder.save(this);
     }
 
     @Override
     public void setMemento(Memento m) {
-        // L'userInterface contient déjà un attribut textToInsert
         userInterface.setTextToInsert(m.getState());
     }
 

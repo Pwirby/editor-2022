@@ -12,6 +12,7 @@ public class MementoTest {
     private Engine engine;
     private UserInterface userInterface;
     private Recorder recorder;
+    private UndoManager undoManager;
     private Command insert, copy, cut, paste, quit;
     private Command moveBegin, moveEnd, selectAll, extendLeft, extendRight, moveLeft, moveRight;
 
@@ -20,21 +21,22 @@ public class MementoTest {
     void setUp() {
         engine = new EngineImpl();
         recorder = new RecorderImpl();
-        userInterface = new UserInterfaceImpl(engine, recorder);
+        undoManager = new UndoManager(engine);
+        userInterface = new UserInterfaceImpl(engine, recorder, undoManager);
 
-        insert = new InsertCommand(engine, userInterface, recorder);
-        copy = new CopyCommand(engine, recorder);
-        cut = new CutCommand(engine, recorder);
-        paste = new PasteCommand(engine, userInterface, recorder);
+        insert = new InsertCommand(engine, userInterface, recorder, undoManager);
+        copy = new CopyCommand(engine, recorder, undoManager);
+        cut = new CutCommand(engine, recorder, undoManager);
+        paste = new PasteCommand(engine, userInterface, recorder, undoManager);
         quit = new QuitCommand(userInterface);
 
-        selectAll = new SelectAllCommand(engine, recorder);
-        moveLeft = new MoveLeftSelectionCommand(engine, recorder);
-        moveRight = new MoveRightSelectionCommand(engine, recorder);
-        extendLeft = new ExtendLeftSelectionCommand(engine, recorder);
-        extendRight = new ExtendRightSelectionCommand(engine, recorder);
-        moveBegin = new MoveBeginSelectionCommand(engine, recorder);
-        moveEnd = new MoveEndSelectionCommand(engine, recorder);
+        selectAll = new SelectAllCommand(engine, recorder, undoManager);
+        moveLeft = new MoveLeftSelectionCommand(engine, recorder, undoManager);
+        moveRight = new MoveRightSelectionCommand(engine, recorder, undoManager);
+        extendLeft = new ExtendLeftSelectionCommand(engine, recorder, undoManager);
+        extendRight = new ExtendRightSelectionCommand(engine, recorder, undoManager);
+        moveBegin = new MoveBeginSelectionCommand(engine, recorder, undoManager);
+        moveEnd = new MoveEndSelectionCommand(engine, recorder, undoManager);
     }
 
     @Test
