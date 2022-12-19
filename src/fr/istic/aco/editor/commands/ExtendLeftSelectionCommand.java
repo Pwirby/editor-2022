@@ -11,6 +11,12 @@ public class ExtendLeftSelectionCommand implements Command{
     private final Engine engine;
     private final Recorder recorder;
 
+    /**
+     * Extend the selection to the left by one character
+     *
+     * @param engine
+     * @param recorder where commands are being registered
+     */
     public ExtendLeftSelectionCommand(Engine engine, Recorder recorder) {
         this.engine = engine;
         this.recorder = recorder;

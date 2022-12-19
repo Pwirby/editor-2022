@@ -36,7 +36,7 @@ public interface UserInterface {
     void setReadStream(InputStream inputStream);
 
     /**
-     * Add a Command in a hashmap
+     * Add a {@link Command} in a hashmap
      * @param keyword Name of the command
      * @param command Command object to add
      * @throws IllegalArgumentException if one the parameters is null

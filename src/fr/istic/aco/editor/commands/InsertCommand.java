@@ -11,6 +11,12 @@ public class InsertCommand implements Command{
     private final UserInterface userInterface;
     private final Recorder recorder;
 
+    /**
+     * The command to add content to the buffer
+     * @param engine
+     * @param userInterface
+     * @param recorder where commands are being registered
+     */
     public InsertCommand(Engine engine, UserInterface userInterface, Recorder recorder) {
         this.engine = engine;
         this.userInterface = userInterface;

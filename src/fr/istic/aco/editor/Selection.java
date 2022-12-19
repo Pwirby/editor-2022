@@ -12,7 +12,7 @@ public interface Selection {
      * Provides the index of the first character designated
      * by the selection.
      *
-     * @return
+     * @return the begin index
      */
     int getBeginIndex();
 

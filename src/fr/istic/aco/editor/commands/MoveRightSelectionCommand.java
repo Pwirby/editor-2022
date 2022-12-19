@@ -7,10 +7,16 @@ import fr.istic.aco.editor.mementos.Recorder;
 /**
  * Command to move the selection to the right by one character
  */
-public class MoveRightSelectionCommand implements Command{
+public class MoveRightSelectionCommand implements Command {
     private final Engine engine;
     private final Recorder recorder;
 
+    /**
+     * Move both selection's bounds to the right
+     *
+     * @param engine
+     * @param recorder
+     */
     public MoveRightSelectionCommand(Engine engine, Recorder recorder) {
         this.engine = engine;
         this.recorder = recorder;
@@ -18,8 +24,8 @@ public class MoveRightSelectionCommand implements Command{
 
     @Override
     public void execute() {
-        engine.getSelection().setEndIndex(engine.getSelection().getEndIndex()+1);
-        engine.getSelection().setBeginIndex(engine.getSelection().getBeginIndex()+1);
+        engine.getSelection().setEndIndex(engine.getSelection().getEndIndex() + 1);
+        engine.getSelection().setBeginIndex(engine.getSelection().getBeginIndex() + 1);
         recorder.save(this);
     }
 
