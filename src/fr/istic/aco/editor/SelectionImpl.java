@@ -6,10 +6,19 @@ public class SelectionImpl implements Selection {
     private StringBuffer buffer;
     private int bufferBeginIndex;
 
+    /**
+     * The constructor to a new {@link SelectionImpl} object
+     * @param buffer
+     */
     public SelectionImpl(StringBuffer buffer) {
         this(buffer, 0);
     }
 
+    /**
+     * The constructor to a new {@link SelectionImpl} object
+     * @param buffer the content of the editor
+     * @param bufferBeginIndex the minimum of the selection beginIndex
+     */
     public SelectionImpl(StringBuffer buffer, int bufferBeginIndex) {
         if (bufferBeginIndex < 0)
             throw new IllegalArgumentException("Buffer begin index must be >= 0");

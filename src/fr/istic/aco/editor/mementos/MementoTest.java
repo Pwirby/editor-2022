@@ -12,9 +12,8 @@ public class MementoTest {
     private Engine engine;
     private UserInterface userInterface;
     private Recorder recorder;
-    private Command insert, copy, cut, paste, quit;
+    private Command insert, copy, cut, paste;
     private Command moveBegin, moveEnd, selectAll, extendLeft, extendRight, moveLeft, moveRight;
-
 
     @org.junit.jupiter.api.BeforeEach
     void setUp() {
@@ -26,7 +25,6 @@ public class MementoTest {
         copy = new CopyCommand(engine, recorder);
         cut = new CutCommand(engine, recorder);
         paste = new PasteCommand(engine, userInterface, recorder);
-        quit = new QuitCommand(userInterface);
 
         selectAll = new SelectAllCommand(engine, recorder);
         moveLeft = new MoveLeftSelectionCommand(engine, recorder);
@@ -35,27 +33,27 @@ public class MementoTest {
         extendRight = new ExtendRightSelectionCommand(engine, recorder);
         moveBegin = new MoveBeginSelectionCommand(engine, recorder);
         moveEnd = new MoveEndSelectionCommand(engine, recorder);
+        // the quick brown fox jumps over the lazy dog|><|
+        engine.insert(string1);
     }
 
     @Test
-    @DisplayName("Insert a text inside the engine's buffer")
-    void InsertCommand(){
+    @DisplayName("Insert a text inside the engine's buffer twice using replay")
+    void InsertCommand() {
         userInterface.setTextToInsert(string1);
         recorder.start();
-        // the quick brown fox jumps over the lazy dog|><|
+        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
         insert.execute();
         recorder.stop();
-        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
+        // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
         recorder.replay();
 
-        assertEquals(string1+string1, engine.getBufferContents());
+        assertEquals(string1 + string1 + string1, engine.getBufferContents());
     }
+
     @Test
-    @DisplayName("Paste the content of the clipboard inside the buffer")
-    void CopyPasteCommandTest(){
-        userInterface.setTextToInsert(string1);
-        // the quick brown fox jumps over the lazy dog|><|
-        insert.execute();
+    @DisplayName("Copy the paste the content of the clipboard inside the buffer twice")
+    void CopyPasteCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
         copy.execute();
@@ -69,15 +67,13 @@ public class MementoTest {
         // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
         recorder.replay();
 
-        assertEquals(string1+string1+string1, engine.getBufferContents());
+        assertEquals(string1 + string1 + string1, engine.getBufferContents());
         assertEquals(string1, engine.getClipboardContents());
     }
+
     @Test
-    @DisplayName("Paste the content of the clipboard inside the buffer")
-    void CutPasteCommandTest(){
-        userInterface.setTextToInsert(string1);
-        // the quick brown fox jumps over the lazy dog|><|
-        insert.execute();
+    @DisplayName("Cut then paste the content of the clipboard inside the buffer twice")
+    void CutPasteCommandTest() {
         // |>the quick brown fox jumps over the lazy dog<|
         selectAll.execute();
         // |><|
@@ -90,7 +86,110 @@ public class MementoTest {
         // the quick brown fox jumps over the lazy dogthe quick brown fox jumps over the lazy dog|><|
         recorder.replay();
 
-        assertEquals(string1+string1, engine.getBufferContents());
+        assertEquals(string1 + string1, engine.getBufferContents());
         assertEquals(string1, engine.getClipboardContents());
+    }
+
+    @Test
+    @DisplayName("Extend the selection to the left by one character twice")
+    void ExtendLeftCommandTest() {
+        recorder.start();
+        // the quick brown fox jumps over the lazy do|>g<|
+        extendLeft.execute();
+        recorder.stop();
+        // the quick brown fox jumps over the lazy d|>og<|
+        recorder.replay();
+        assertEquals(engine.getBufferContents().length() - 2, engine.getSelection().getBeginIndex());
+    }
+
+    @Test
+    @DisplayName("Extend the selection to the right by one character twice")
+    void ExtendRightCommandTest() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        recorder.start();
+        // |>t<|he quick brown fox jumps over the lazy dog
+        extendRight.execute();
+        recorder.stop();
+        // |>th<|e quick brown fox jumps over the lazy dog
+        recorder.replay();
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 2, engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("Move the selection to the begin of the buffer")
+    void MoveBeginSelectionCommandTest() {
+        recorder.start();
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        recorder.stop();
+        // the quick brown fox jumps over the lazy dog|><|
+        moveEnd.execute();
+        // |><|the quick brown fox jumps over the lazy dog
+        recorder.replay();
+
+        assertEquals(0, engine.getSelection().getBeginIndex());
+        assertEquals(0, engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("Move the selection to the end of the buffer")
+    void MoveEndSelectionCommandTest() {
+        recorder.start();
+        // the quick brown fox jumps over the lazy dog|><|
+        moveEnd.execute();
+        recorder.stop();
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        // the quick brown fox jumps over the lazy dog|><|
+        recorder.replay();
+
+        assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("Move the selection to the left by one character twice")
+    void MoveLeftSelectionCommandTest() {
+        recorder.start();
+        // the quick brown fox jumps over the lazy do|><|g
+        moveLeft.execute();
+        recorder.stop();
+        // the quick brown fox jumps over the lazy d|><|og
+        recorder.replay();
+
+        assertEquals(engine.getSelection().getBufferEndIndex() - 2, engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferEndIndex() - 2, engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("Move the selection to the left by one character twice")
+    void MoveRightSelectionCommandTest() {
+        // |><|the quick brown fox jumps over the lazy dog
+        moveBegin.execute();
+        recorder.start();
+        // t|><|he quick brown fox jumps over the lazy dog
+        moveRight.execute();
+        recorder.stop();
+        // th|><|e quick brown fox jumps over the lazy dog
+        recorder.replay();
+
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 2, engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferBeginIndex() + 2, engine.getSelection().getEndIndex());
+    }
+
+    @Test
+    @DisplayName("The selection should reselect the entire content of the buffer")
+    void SelectAllCommandTest() {
+        recorder.start();
+        // |>the quick brown fox jumps over the lazy dog<|
+        selectAll.execute();
+        recorder.stop();
+        // the quick brown fox jumps over the lazy dog|><|
+        moveEnd.execute();
+        // |>the quick brown fox jumps over the lazy dog<|
+        recorder.replay();
+        assertEquals(engine.getSelection().getBufferBeginIndex(), engine.getSelection().getBeginIndex());
+        assertEquals(engine.getSelection().getBufferEndIndex(), engine.getSelection().getEndIndex());
     }
 }

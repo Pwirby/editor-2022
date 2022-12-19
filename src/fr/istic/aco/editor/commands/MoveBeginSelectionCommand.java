@@ -11,6 +11,11 @@ public class MoveBeginSelectionCommand implements Command {
     private final Engine engine;
     private final Recorder recorder;
 
+    /**
+     * Move both selection's bounds to the beginning of the buffer
+     * @param engine
+     * @param recorder where commands are being registered
+     */
     public MoveBeginSelectionCommand(Engine engine, Recorder recorder) {
         this.engine = engine;
         this.recorder = recorder;
@@ -22,6 +27,7 @@ public class MoveBeginSelectionCommand implements Command {
         engine.getSelection().setEndIndex(engine.getSelection().getBufferBeginIndex());
         recorder.save(this);
     }
+
     @Override
     public void setMemento(Memento m) {
     }

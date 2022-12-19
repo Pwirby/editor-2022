@@ -4,7 +4,6 @@ import fr.istic.aco.editor.commands.Command;
 
 /**
  * API of the Recorder
- *
  */
 public interface Recorder {
     /**

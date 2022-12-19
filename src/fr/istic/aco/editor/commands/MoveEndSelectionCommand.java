@@ -11,6 +11,11 @@ public class MoveEndSelectionCommand implements Command {
     private final Engine engine;
     private final Recorder recorder;
 
+    /**
+     * Move both selection's bounds to the end of the buffer
+     * @param engine
+     * @param recorder
+     */
     public MoveEndSelectionCommand(Engine engine, Recorder recorder) {
         this.engine = engine;
         this.recorder = recorder;

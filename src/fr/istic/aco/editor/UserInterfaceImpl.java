@@ -21,6 +21,12 @@ public class UserInterfaceImpl implements UserInterface {
     private BufferedReader bufferedReader;
     private String textToInsert;
 
+    /**
+     * The constructor to make a new {@link UserInterfaceImpl}
+     *
+     * @param engine
+     * @param recorder where the command history will be recorded
+     */
     public UserInterfaceImpl(Engine engine, Recorder recorder) {
         textToInsert = engine.getBufferContents();
         addCommand("insert", new InsertCommand(engine, this, recorder));
@@ -30,13 +36,13 @@ public class UserInterfaceImpl implements UserInterface {
     /**
      * The main loop for the text editor that takes commands or texts
      *
-     * @throws IOException On input error
+     * @exception IOException On input error
      * @see IOException
      */
     @Override
     public void runInvokerLoop() {
         while (!this.getStopLoop()) {
-            commands.get(commandToken+"display").execute();
+            commands.get(commandToken + "display").execute();
             String userInput = null;
             try {
                 userInput = readUserInput();
@@ -51,14 +57,14 @@ public class UserInterfaceImpl implements UserInterface {
                 cmdToExecute.execute();
             } else {
                 setTextToInsert(userInput);
-                commands.get(commandToken+"insert").execute();
+                commands.get(commandToken + "insert").execute();
             }
         }
     }
 
     /**
      * Stop the main loop in runIvokerLoop and quit the application
-    */
+     */
     @Override
     public void stopLoop() {
         stopLoop = true;
@@ -100,7 +106,7 @@ public class UserInterfaceImpl implements UserInterface {
     }
 
     /**
-     * Add a Command in a hashmap
+     * Add a {@link Command} in a hashmap
      *
      * @param keyword Name of the command
      * @param command Command object to add
@@ -119,7 +125,7 @@ public class UserInterfaceImpl implements UserInterface {
      * Display the contents of the buffer and eventually
      * the clipboard in the terminal
      */
-    public void displayContent(Engine engine){
+    public void displayContent(Engine engine) {
         System.out.println("========== Buffer ===========================================================");
         displayText(engine.toString());
         if (!engine.getClipboardContents().isEmpty()) {
