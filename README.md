@@ -12,6 +12,5 @@ The list of command is;
 - right, to move the selection to the right
 - begin, to move the selection to the start of the text
 - end, to move the selection to the end of the text
-- quit, to quit the editor
-<br/>
+- quit, to quit the editor  
 From [Clyde JANNEL](https://github.com/Pwirby) & [Théophile CARRASCO](https://github.com/EyeCrown)
